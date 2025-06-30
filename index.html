@@ -27,7 +27,7 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
-        .book-link-card {
+        .link-card {
             background-color: white;
             border-radius: 0.75rem;
             padding: 1.5rem;
@@ -35,7 +35,7 @@
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .book-link-card:hover {
+        .link-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
@@ -72,17 +72,17 @@
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <a href="https://leanpub.com/u/sanjibsinha" target="_blank" rel="noopener noreferrer" class="book-link-card">
+                    <a href="https://leanpub.com/u/sanjibsinha" target="_blank" rel="noopener noreferrer" class="link-card">
                         <h3 class="text-xl font-bold text-slate-800">Leanpub</h3>
                         <p class="text-slate-500 mt-2">Find my self-published books and guides.</p>
                     </a>
 
-                    <a href="https://www.amazon.in/Books-Sanjib-Sinha/s?rh=n%3A976389031%2Cp_27%3ASanjib%2BSinha" target="_blank" rel="noopener noreferrer" class="book-link-card">
+                    <a href="https://www.amazon.in/Books-Sanjib-Sinha/s?rh=n%3A976389031%2Cp_27%3ASanjib%2BSinha" target="_blank" rel="noopener noreferrer" class="link-card">
                         <h3 class="text-xl font-bold text-slate-800">Amazon</h3>
                         <p class="text-slate-500 mt-2">Author page for Kindle and paperback editions.</p>
                     </a>
                     
-                    <a href="https://link.springer.com/book/10.1007/978-1-4842-5562-9" target="_blank" rel="noopener noreferrer" class="book-link-card">
+                    <a href="https://link.springer.com/book/10.1007/978-1-4842-5562-9" target="_blank" rel="noopener noreferrer" class="link-card">
                         <h3 class="text-xl font-bold text-slate-800">Springer Nature</h3>
                         <p class="text-slate-500 mt-2">Professionally published books by Apress.</p>
                     </a>
@@ -90,21 +90,66 @@
                 </div>
             </section>
             
+            <section id="projects" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-green-500 pb-3 mb-6">Web Pages & Projects</h2>
+                <p class="text-slate-600 leading-relaxed mb-8 text-lg">
+                    Explore my other pages, including project showcases, book-specific content, and various web applications.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="./app.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Web App</h3>
+                        <p class="text-slate-500 mt-2">A sample application page.</p>
+                    </a>
+                    <a href="./books.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Book Collection</h3>
+                        <p class="text-slate-500 mt-2">An overview of my published works.</p>
+                    </a>
+                    <a href="./contact.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Contact Me</h3>
+                        <p class="text-slate-500 mt-2">Get in touch for collaborations or queries.</p>
+                    </a>
+                    <a href="./flutter-book.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Flutter Book</h3>
+                        <p class="text-slate-500 mt-2">Dedicated page for my Flutter book.</p>
+                    </a>
+                    <a href="./go-book.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Go Programming Book</h3>
+                        <p class="text-slate-500 mt-2">Page for my book on the Go language.</p>
+                    </a>
+                    <a href="./linux-book.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Linux Programming Book</h3>
+                        <p class="text-slate-500 mt-2">Content for my book on Linux.</p>
+                    </a>
+                    <a href="./projects.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">My Projects</h3>
+                        <p class="text-slate-500 mt-2">A showcase of my software projects.</p>
+                    </a>
+                    <a href="./python-book.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Python Book</h3>
+                        <p class="text-slate-500 mt-2">Details about my book on Python.</p>
+                    </a>
+                    <a href="./thank-you.html" class="link-card">
+                        <h3 class="text-xl font-bold text-slate-800">Thank You</h3>
+                        <p class="text-slate-500 mt-2">A message of appreciation.</p>
+                    </a>
+                </div>
+            </section>
+            
             <section id="connect" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
                  <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-green-500 pb-3 mb-6">Connect & Collaborate</h2>
                  <p class="text-slate-600 leading-relaxed mb-8 text-lg">
-                    Let's connect on social media or collaborate on open-source projects.
-                </p>
+                     Let's connect on social media or collaborate on open-source projects.
+                 </p>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <a href="https://github.com/sanjibsinha" target="_blank" rel="noopener noreferrer" class="book-link-card">
-                        <h3 class="text-xl font-bold text-slate-800">GitHub</h3>
-                        <p class="text-slate-500 mt-2">Explore my code and open-source projects.</p>
-                    </a>
+                     <a href="https://github.com/sanjibsinha" target="_blank" rel="noopener noreferrer" class="link-card">
+                         <h3 class="text-xl font-bold text-slate-800">GitHub</h3>
+                         <p class="text-slate-500 mt-2">Explore my code and open-source projects.</p>
+                     </a>
 
-                    <a href="https://x.com/sanjibsinha?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" rel="noopener noreferrer" class="book-link-card">
-                        <h3 class="text-xl font-bold text-slate-800">X (Twitter)</h3>
-                        <p class="text-slate-500 mt-2">Follow my thoughts and updates.</p>
-                    </a>
+                     <a href="https://x.com/sanjibsinha?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" rel="noopener noreferrer" class="link-card">
+                         <h3 class="text-xl font-bold text-slate-800">X (Twitter)</h3>
+                         <p class="text-slate-500 mt-2">Follow my thoughts and updates.</p>
+                     </a>
                  </div>
             </section>
         </main>
