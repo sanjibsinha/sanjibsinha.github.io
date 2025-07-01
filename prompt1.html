@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apocalyptic Love: A Prompt Compendium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Ember -->
+    <!-- Application Structure Plan: A dual-pane "Prompt Explorer" design. A persistent navigation sidebar/topbar allows users to select from the 15 prompt titles. Clicking a title dynamically updates the main content panel with the full details of that prompt (title, scene, effects, and analyzed thematic tags). This structure was chosen to facilitate rapid Browse of ideas while allowing for an immersive deep-dive into any selected prompt without leaving the page, turning a static list into an efficient creative tool. -->
+    <!-- Visualization & Content Choices: The report is text-based, so the primary 'visualization' is the information architecture itself. Key data points (themes, core elements, narrative stage) are extracted and presented as visually distinct 'tags' or 'pills' using HTML/CSS for quick comprehension. The main interaction is a JS-driven navigation that updates content blocks. Report Info: Prompt List -> Goal: Exploration -> Presentation: Interactive Nav List -> Interaction: On-click content update -> Justification: Allows quick scanning and deep dives. Report Info: Scene/Effects Text -> Goal: Inform/Inspire -> Presentation: Well-structured text blocks -> Interaction: Dynamic update -> Justification: Clear, readable presentation of core creative material. No charts are needed. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .prompt-nav-item.active {
+            background-color: #c2410c;
+            color: #fff7ed;
+        }
+        .content-fade {
+            transition: opacity 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-orange-50 text-slate-800">
+
+    <div id="app" class="min-h-screen">
+        <header class="bg-slate-800 text-orange-100 shadow-lg py-4 px-4 sm:px-8">
+            <h1 class="text-2xl md:text-4xl title-font text-center">Apocalyptic Love: A Prompt Compendium</h1>
+            <p class="text-center text-sm md:text-base text-orange-200 mt-1">An Interactive Explorer of Post-Human Romance and Survival</p>
+        </header>
+
+        <main class="p-4 sm:p-6 lg:p-8">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                
+                <nav class="lg:col-span-4 xl:col-span-3 mb-6 lg:mb-0">
+                    <div class="bg-white rounded-xl shadow-md p-4 sticky top-8">
+                        <h2 class="text-lg font-bold mb-3 border-b pb-2 text-slate-700">Explore Scenarios</h2>
+                        <div id="prompt-navigation" class="space-y-2 max-h-[70vh] overflow-y-auto pr-2">
+                        </div>
+                    </div>
+                </nav>
+
+                <div id="prompt-content-wrapper" class="lg:col-span-8 xl:col-span-9">
+                    <article id="prompt-display" class="bg-white rounded-xl shadow-lg p-6 sm:p-8 min-h-[60vh] content-fade">
+                        <h2 id="prompt-title" class="text-3xl lg:text-4xl font-bold title-font text-orange-700 mb-4"></h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-sm uppercase text-slate-500 mb-2">Key Elements</h3>
+                            <div id="prompt-tags" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="mb-6">
+                             <h3 class="font-bold text-sm uppercase text-slate-500 mb-3">📖 Scene Description</h3>
+                             <p id="prompt-scene" class="text-slate-600 leading-relaxed bg-orange-50/50 p-4 rounded-lg border-l-4 border-orange-200"></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold text-sm uppercase text-slate-500 mb-3">✨ Special Effects & Mood</h3>
+                            <p id="prompt-effects" class="text-slate-600 leading-relaxed bg-blue-50/50 p-4 rounded-lg border-l-4 border-blue-200"></p>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="text-center py-6 px-4 text-slate-500 text-sm mt-8">
+            <p>Generated Interactive Report. Select a scenario to explore the details.</p>
+        </footer>
+    </div>
+
+    <script>
+        const promptData = [
+            {
+                title: "The Last Sunset Stand",
+                scene: "On the shattered observation deck of a skyscraper, two couples stand silhouetted against a toxic, orange sunset. One female cyborg with intricate, porcelain-like plating holds hands with her human girlfriend, whose face is smudged with dirt. The other cyborg, sleek and metallic, has her arm around her human boyfriend. At their feet, a small, furry, six-legged creature looks up at them trustingly. Below, the ruined city streets crawl with shadowy, multi-limbed alien monsters.",
+                effects: "Anamorphic lens flare from the setting sun, volumetric dust and smoke coiling through the urban canyons, a subtle, protective energy shield flickering around the group.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Aliens', 'Survival', 'Defiance']
+            },
+            {
+                title: "A Moment in the Oasis",
+                scene: "Inside a hidden, bioluminescent cave garden, one cyborg gently repairs the other's damaged arm, sparks flying softly. Their human partners sit close by, sharing a piece of scavenged fruit. A friendly, reptilian creature with glowing crystal spines is curled up near them, emitting a soft, warm light. The scene is one of peaceful intimacy, a stark contrast to the war outside.",
+                effects: "Soft, diffused lighting from the cave's glowing flora and the creature, detailed close-up on the intricate cybernetic wiring in the damaged arm, water dripping from stalactites creating ripples in a clear pool.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Intimacy', 'Peace']
+            },
+            {
+                title: "The Ghost in the Machine's Embrace",
+                scene: "A female cyborg stares at her reflection in a broken shard of glass, but the reflection shows the fully human woman she once was. Her human girlfriend tenderly cups her face, pulling her focus away from the ghost of the past. The second couple is in the background, keeping watch, while their lanky, bird-like creature companion perches on a ruined statue, its head cocked.",
+                effects: "A subtle digital 'glitch' effect on the reflection, dramatic chiaroscuro lighting, dust motes dancing in a single ray of light piercing the gloom.",
+                tags: ['Cyborg', 'Human', 'Creature', 'Identity', 'AI', 'Memory']
+            },
+            {
+                title: "The Moral Crossroads",
+                scene: "The group has cornered a smaller, wounded alien that looks more scared than monstrous. One cyborg, her combat protocols flaring, aims her weapon. Her human boyfriend puts a hand on her arm, urging her to reconsider. The other couple is tending to the alien's wound, while their gelatinous, amoeba-like creature companion gently nudges the alien, sensing its fear.",
+                effects: "A tense, cinematic focus pull between the cyborg's glowing red optic and the alien's large, tear-filled eye. Rain-slicked ground reflecting the neon lights from cybernetic implants.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Alien', 'Morality', 'Conflict']
+            },
+            {
+                title: "Symphony of the Scrapyard",
+                scene: "In a vast scrapyard under a double moon, one cyborg projects a holographic musical interface, composing a hauntingly beautiful melody. Her human partner leans against her, eyes closed, lost in the music. The other couple dances slowly and gracefully amidst the wreckage. A small, metallic, crab-like creature clicks its claws in time with the music.",
+                effects: "The holographic interface is vibrant and complex, with musical notes visualized as light particles. Ethereal light from the twin moons. Lens flares from distant explosions on the horizon.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Art', 'Hope', 'Beauty']
+            },
+            {
+                title: "In the Belly of the Beast",
+                scene: "The four heroes are planting a bomb deep within a pulsating, organic alien hive. The two cyborgs provide cover fire with glowing energy cannons, their movements precise and deadly. Their human partners, more nimble, set the charge. They share a look of profound trust and love. A floating, jellyfish-like creature illuminates the grotesque, fleshy walls with a calming blue light.",
+                effects: "Muzzle flashes illuminating the horrific alien architecture, a digital countdown timer casting a red glow on their determined faces, particle effects from the creature's bioluminescence.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Aliens', 'Action', 'Teamwork']
+            },
+            {
+                title: "The Mind Meld",
+                scene: "To extract tactical information, a cyborg has interfaced with a downed alien war machine. Her eyes are pure white light as data streams into her consciousness. Her human girlfriend holds her hands, providing a physical anchor to reality. The other couple stands guard, back-to-back, while their winged fox-like creature snarls at unseen threats in the darkness.",
+                effects: "A torrent of abstract, alien data visualized as light flowing from the machine into the cyborg's head. Crackling energy arcs from the damaged machine. A shallow depth of field, focusing on the intimate connection between the cyborg and her partner.",
+                tags: ['Cyborg', 'Human', 'Creature', 'AI', 'Sacrifice', 'Information']
+            },
+            {
+                title: "Cultivating Hope",
+                scene: "On a rooftop high above the desolation, the group has cultivated a small, vibrant garden. One couple is watering the plants, their faces lit with smiles. The other couple is sketching in a journal, designing a new world. A creature that is a hybrid of a plant and a lizard basks in a sunbeam. In the distance, a colossal alien mothership hangs ominously in the sky.",
+                effects: "The garden is hyper-saturated with color, contrasting with the grey, ruined city below. The sheer scale of the mothership creates a sense of dread and wonder. Sunbeams breaking through polluted clouds.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Hope', 'Rebuilding', 'Contrast']
+            },
+            {
+                title: "An Alliance Forged in Fire",
+                scene: "The group is fighting alongside a sentient, crystalline alien against the monstrous invaders. The cyborgs coordinate attacks with the crystalline being, their energy weapons complementing its light-based powers. Their human partners fight in close-quarters, defending their new ally. Their own strange creature, a rock-like golem, fights beside them.",
+                effects: "Explosions of light and energy from the crystalline alien's attacks. Intricate patterns glowing on the cyborgs' armor as they sync with their ally. Dynamic motion blur to convey the speed and chaos of the battle.",
+                tags: ['Cyborgs', 'Humans', 'Creatures', 'Aliens', 'Alliance', 'Action']
+            },
+            {
+                title: "The AI's Choice",
+                scene: "A cyborg is plugged into a pre-apocalypse data hub, a choice before her: unleash a data plague to disable the alien fleet, but erase her own consciousness in the process. Her human partner is holding her, face buried in her shoulder, pleading silently. The other couple watches, their faces a mixture of hope and sorrow.",
+                effects: "The data hub is a cathedral of light and wires. The cyborg's internal conflict is visualized as flickering code and fragmented memories appearing on nearby screens. A single, digital tear escapes her optic.",
+                tags: ['Cyborg', 'Human', 'AI', 'Sacrifice', 'Morality', 'Consciousness']
+            },
+            {
+                title: "Stargazing on the Edge of Forever",
+                scene: "The four are lying on the hood of a rusted-out car in the middle of a desert, looking up at a sky full of unfamiliar constellations and nebulae. One cyborg is pointing, her internal database identifying the new star patterns for her human lover. A small, glowing, insectoid creature flits between them like a firefly.",
+                effects: "A breathtaking, hyper-detailed view of the galactic core. The Milky Way is vibrant and colorful. A faint aurora borealis effect on the horizon.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Wonder', 'Peace', 'Exploration']
+            },
+            {
+                title: "The Weight of Memory",
+                scene: "In a ruined library, one cyborg holds a burnt book, her expression unreadable. Her human partner reads a passage over her shoulder. The other couple is trying to salvage old data drives, while their creature, which looks like a small, furry T-Rex, playfully nudges a stack of books. The scene is quiet and contemplative.",
+                effects: "Shafts of light filtering through holes in the ceiling, illuminating floating dust particles. The cyborg's expression subtly shifts as she processes the ancient text. A holographic display flickers from a salvaged data drive.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'History', 'Memory', 'Contemplation']
+            },
+            {
+                title: "Charge of the Last Brigade",
+                scene: "The two couples are riding on the back of their large, friendly creature—a massive, six-limbed beast that resembles a gentle giant—leading a charge against a horde of aliens. The cyborgs have their weapons blazing, while their human partners hold on tight, their faces set with determination.",
+                effects: "A low-angle, dynamic shot emphasizing the scale and power of the charge. Debris and dirt kicked up from the beast's feet. The aliens are a terrifying, chaotic wave of claws and teeth.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Aliens', 'Action', 'Climax']
+            },
+            {
+                title: "Whispers of the Old World",
+                scene: "The group explores a flooded subway station. The cyborgs use their optical lights to cut through the darkness. The water reflects their forms and the eerie, decaying advertisements on the walls. Their amphibian-like creature companion swims gracefully ahead, its bioluminescent patterns lighting the way. A sense of history and loss pervades the scene.",
+                effects: "Murky, god-ray lighting filtering down from street-level grates. The water is eerily still, with perfect reflections. The cyborgs' lights create long, moving shadows.",
+                tags: ['Cyborgs', 'Humans', 'Creature', 'Exploration', 'History', 'Atmosphere']
+            },
+            {
+                title: "The First Sunrise",
+                scene: "The final battle is won. The four heroes stand on a cliffside, battered and bruised, watching the first true sunrise in years. The clouds are parting, revealing a clean, blue sky. They are holding each other, some crying, some smiling. Their strange and wonderful creatures are playing at their feet, celebrating the dawn of a new day.",
+                effects: "A brilliant, warm, and hopeful sunrise. The light catches the chrome and metal of the cyborgs and the tears on the humans' faces. A lens flare that fills the frame with hope.",
+                tags: ['Cyborgs', 'Humans', 'Creatures', 'Hope', 'Resolution', 'New Beginning']
+            }
+        ];
+
+        const navContainer = document.getElementById('prompt-navigation');
+        const contentWrapper = document.getElementById('prompt-display');
+        const titleEl = document.getElementById('prompt-title');
+        const tagsEl = document.getElementById('prompt-tags');
+        const sceneEl = document.getElementById('prompt-scene');
+        const effectsEl = document.getElementById('prompt-effects');
+
+        function displayPrompt(index) {
+            const prompt = promptData[index];
+            if (!prompt) return;
+
+            contentWrapper.style.opacity = 0;
+
+            setTimeout(() => {
+                titleEl.textContent = prompt.title;
+                sceneEl.textContent = prompt.scene;
+                effectsEl.textContent = prompt.effects;
+
+                tagsEl.innerHTML = '';
+                prompt.tags.forEach(tag => {
+                    const tagEl = document.createElement('span');
+                    tagEl.className = 'bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-1 rounded-full';
+                    tagEl.textContent = tag;
+                    tagsEl.appendChild(tagEl);
+                });
+
+                document.querySelectorAll('.prompt-nav-item').forEach((item, itemIndex) => {
+                    if (itemIndex === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                contentWrapper.style.opacity = 1;
+            }, 400); 
+        }
+
+        function initializeApp() {
+            promptData.forEach((prompt, index) => {
+                const navItem = document.createElement('button');
+                navItem.className = 'prompt-nav-item w-full text-left px-4 py-2 rounded-lg text-slate-700 hover:bg-orange-100 transition-colors duration-200';
+                navItem.textContent = `${index + 1}. ${prompt.title}`;
+                navItem.addEventListener('click', () => displayPrompt(index));
+                navContainer.appendChild(navItem);
+            });
+            displayPrompt(0);
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+    </script>
+</body>
+</html>
+
