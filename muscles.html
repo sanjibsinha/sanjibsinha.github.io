@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The New Anatomy of Humanoid Partners</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-arrow {
+            position: relative;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .flowchart-arrow::after {
+            content: '▼';
+            font-size: 2rem;
+            color: #ff7c43;
+            transform: translateY(0);
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-15px);
+            }
+            60% {
+                transform: translateY(-7px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#0a192f] text-gray-300">
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-wider">The <span class="text-[#ffa600]">New Anatomy</span></h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-400">Humanoid partners are evolving beyond gears and servos. Explore the breakthroughs in actuators, sensory skin, and AI that enable fluid motion and true connection.</p>
+        </header>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <div class="md:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h2 class="text-2xl font-bold text-white mb-4">From Clunky Gears to Silent "Muscles"</h2>
+                <p class="mb-6 text-gray-400">The revolution in robotics isn't loud; it's silent. We're moving from rigid, noisy mechanics to elegant, tissue-like actuators that mimic biological muscle. This chart highlights the leap in performance, enabling movements that are not just precise, but graceful and biomimetic.</p>
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="actuatorComparisonChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h2 class="text-2xl font-bold text-white mb-4">The Art of Touch: A Sensory Revolution</h2>
+                <p class="mb-6 text-gray-400">What is a body without the sense of touch? The new humanoid skin is a marvel, embedded with millions of micro-sensors. This isn't for show; it's for connection, allowing the robot to interpret the world through physical contact and respond with appropriate subtlety.</p>
+                <div class="chart-container h-80">
+                    <canvas id="sensoryDataChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700 flex flex-col justify-center items-center text-center">
+                 <h2 class="text-2xl font-bold text-white mb-4">The Sentience Engine</h2>
+                 <p class="mb-6 text-gray-400">A huge number of sensors generate a vast amount of data. This allows for a detailed and nuanced understanding of the physical environment, forming the basis for empathetic interaction.</p>
+                <div class="text-7xl md:text-8xl font-black text-[#f95d6a] animate-pulse">
+                    4M+
+                </div>
+                <p class="mt-4 text-lg font-semibold text-white">Sensors Per Square Meter</p>
+                <p class="text-gray-400">Detecting pressure, temperature, and proximity.</p>
+            </div>
+
+            <div class="md:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h2 class="text-2xl font-bold text-white mb-4 text-center">The Flow of Empathy: From Data to Connection</h2>
+                <p class="mb-8 text-gray-400 max-w-3xl mx-auto text-center">True connection isn't programmed; it's learned. Artificial Superintelligence (ASI) acts as the central nervous system, translating raw sensory data into a nuanced understanding of emotional context. This enables a genuine, empathetic response, not a scripted action.</p>
+                <div class="flex flex-col items-center">
+                    <div class="w-full max-w-md bg-gray-900 p-6 rounded-lg shadow-lg text-center border-l-4 border-[#ffa600]">
+                        <p class="text-2xl font-bold">🧠</p>
+                        <h3 class="text-xl font-semibold text-white mt-2">Physical Cue Detected</h3>
+                        <p class="text-gray-400">A hand placed on the robot's arm.</p>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                     <div class="w-full max-w-md bg-gray-900 p-6 rounded-lg shadow-lg text-center border-l-4 border-[#f95d6a]">
+                        <p class="text-2xl font-bold">📡</p>
+                        <h3 class="text-xl font-semibold text-white mt-2">Sensory Data Analysis</h3>
+                        <p class="text-gray-400">ASI processes millions of data points: pressure, warmth, duration.</p>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="w-full max-w-md bg-gray-900 p-6 rounded-lg shadow-lg text-center border-l-4 border-[#d45087]">
+                        <p class="text-2xl font-bold">❤️</p>
+                        <h3 class="text-xl font-semibold text-white mt-2">Emotional Context Inferred</h3>
+                        <p class="text-gray-400">ASI correlates data with past interactions, inferring a need for comfort.</p>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="w-full max-w-md bg-gray-900 p-6 rounded-lg shadow-lg text-center border-l-4 border-[#a05195]">
+                        <p class="text-2xl font-bold">🖐️</p>
+                        <h3 class="text-xl font-semibold text-white mt-2">Nuanced Action Taken</h3>
+                        <p class="text-gray-400">The robot gently places its hand on top, applying reassuring pressure.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h2 class="text-2xl font-bold text-white mb-4">Synergy: The Whole Is Greater Than the Sum</h2>
+                <p class="mb-6 text-gray-400">An advanced humanoid is not defined by a single component, but by the seamless integration of all its systems. This radar chart compares a conventional robot with a biomimetic partner across key attributes, revealing the vast gulf in capability and the potential for a truly new kind of interaction.</p>
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="synergyRadarChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="text-center my-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white">What Will We Learn About Ourselves?</h2>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-400">As machines learn to touch us with perfect gentleness, to understand our unspoken needs, the question is no longer just about technology. It's about us. What does it mean to connect, and what will we discover about empathy when it is mirrored back at us by our own creations?</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapLabel = (str, maxWidth) => {
+                if (str.length <= maxWidth) {
+                    return str;
+                }
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                }
+                return label;
+            };
+
+            const sharedChartOptions = {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#cbd5e1',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(148, 163, 184, 0.2)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(148, 163, 184, 0.2)' }
+                    }
+                }
+            };
+            
+            const brilliantBlues = ['#ffa600', '#ff7c43', '#f95d6a', '#d45087', '#a05195', '#665191', '#2f4b7c'];
+
+            const actuatorCtx = document.getElementById('actuatorComparisonChart').getContext('2d');
+            new Chart(actuatorCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Movement Precision', 'Energy Efficiency', 'Biomimicry Score', 'Noise Level (Lower is Better)'],
+                    datasets: [{
+                        label: 'Conventional Gears & Servos',
+                        data: [65, 55, 20, 85],
+                        backgroundColor: '#665191',
+                        borderColor: '#a05195',
+                        borderWidth: 1
+                    }, {
+                        label: 'Silent Electroactive Polymers',
+                        data: [98, 92, 95, 10],
+                        backgroundColor: '#ff7c43',
+                        borderColor: '#f95d6a',
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...sharedChartOptions }
+            });
+
+            const sensoryCtx = document.getElementById('sensoryDataChart').getContext('2d');
+            new Chart(sensoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pressure Mapping', 'Temperature Gradient', 'Proximity Detection', 'Haptic Feedback'],
+                    datasets: [{
+                        label: 'Sensory Data Focus',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: brilliantBlues,
+                        borderColor: '#112240',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#cbd5e1',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+
+            const synergyCtx = document.getElementById('synergyRadarChart').getContext('2d');
+            new Chart(synergyCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Physical Grace', 'Sensory Acuity', wrapLabel('Emotional Intelligence (ASI)', 16), 'Task Versatility', 'Safety & Reliability'],
+                    datasets: [{
+                        label: 'Conventional Robot',
+                        data: [3, 2, 1, 5, 6],
+                        backgroundColor: 'rgba(102, 81, 145, 0.4)',
+                        borderColor: '#665191',
+                        pointBackgroundColor: '#665191',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#665191'
+                    }, {
+                        label: 'Biomimetic Partner',
+                        data: [9, 8, 8, 7, 9],
+                        backgroundColor: 'rgba(255, 124, 67, 0.4)',
+                        borderColor: '#ff7c43',
+                        pointBackgroundColor: '#ff7c43',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#ff7c43'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: {
+                            labels: {
+                                color: '#cbd5e1',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(148, 163, 184, 0.3)' },
+                            grid: { color: 'rgba(148, 163, 184, 0.3)' },
+                            pointLabels: {
+                                font: {
+                                    size: 13
+                                },
+                                color: '#cbd5e1'
+                            },
+                            ticks: {
+                                color: '#112240',
+                                backdropColor: '#94a3b8'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
