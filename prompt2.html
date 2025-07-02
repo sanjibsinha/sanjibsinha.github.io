@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Prompt Explorer: Futuristic Love</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Celestial Calm -->
+    <!-- Application Structure Plan: A filterable gallery-style dashboard. The main view is a responsive grid of cards, each representing a prompt. Users can filter prompts by theme and setting. Clicking a card reveals its full details in a modal window. A bar chart provides a visual summary of theme distribution. This structure was chosen to transform the static list into an interactive exploratory tool, allowing users to quickly find specific types of creative inspiration based on their interests, rather than reading a linear list. -->
+    <!-- Visualization & Content Choices: Report Info: 15 creative prompts. Goal: Organize, Compare, Inform. Viz/Presentation: Interactive card grid (HTML/Tailwind), detail modal (HTML/Tailwind), filter controls (HTML/JS), and a horizontal bar chart (Chart.js) for theme distribution. Interaction: Users click filters to dynamically update the card grid and click cards to view details. Justification: This provides a highly usable, non-linear way to explore the content, far superior to a static text document. The bar chart adds a simple but effective data analysis layer to the qualitative text. Library/Method: Vanilla JS for logic, Chart.js for visualization. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #f8fafc; /* slate-50 */
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .prompt-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-content {
+            transition: transform 0.25s ease;
+        }
+        .filter-btn.active {
+            background-color: #0891b2; /* cyan-600 */
+            color: white;
+            border-color: #0891b2;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div id="app" class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-800 mb-2">Futuristic Love</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">An interactive explorer for romantic, futuristic story prompts. Use the filters to discover scenarios by theme or setting, and click on any card to reveal the full prompt details.</p>
+        </header>
+
+        <main>
+            <section id="filters" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                 <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3 text-slate-700">Filter by Theme</h3>
+                    <div id="theme-filters" class="flex flex-wrap gap-2">
+                        <button class="filter-btn theme-filter active all-btn border border-slate-300 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200" data-filter="all">All Themes</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-slate-700">Filter by Setting</h3>
+                    <div id="setting-filters" class="flex flex-wrap gap-2">
+                        <button class="filter-btn setting-filter active all-btn border border-slate-300 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200" data-filter="all">All Settings</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="prompts-gallery" class="mb-12">
+                <div id="card-container" class="card-container">
+                </div>
+            </section>
+            
+            <section id="visualization" class="p-6 bg-white rounded-lg shadow-sm">
+                <h2 class="text-2xl font-bold text-center mb-6 text-slate-700">Thematic Overview</h2>
+                <p class="text-center text-slate-600 mb-6 max-w-2xl mx-auto">This chart shows the frequency of different emotional and narrative themes across all available prompts, giving you a quick sense of the collection's creative focus.</p>
+                <div class="chart-container relative w-full h-96 max-w-4xl mx-auto">
+                    <canvas id="themesChart"></canvas>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="prompt-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform scale-95">
+            <div class="p-6 md:p-8">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 id="modal-title" class="text-2xl font-bold text-cyan-800"></h2>
+                    <button id="close-modal" class="text-slate-500 hover:text-slate-800 transition-colors">&times;</button>
+                </div>
+                <p id="modal-description" class="text-slate-700 mb-6"></p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1">Core Theme</h4>
+                        <p id="modal-theme" class="text-slate-600"></p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1">Special Effects & Visuals</h4>
+                        <p id="modal-effects" class="text-slate-600"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <template id="prompt-card-template">
+        <div class="prompt-card bg-white rounded-lg shadow-md overflow-hidden" tabindex="0">
+            <div class="p-6">
+                <h3 class="card-title font-bold text-xl mb-2 text-slate-800"></h3>
+                <p class="card-theme text-sm text-cyan-700 font-semibold"></p>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        const promptsData = [
+            { id: 1, title: "Neon & Noodles", description: "A beautiful female cyborg with delicate, porcelain-like skin and glowing optic cables woven into her hair shares a bowl of steaming noodles with her human girlfriend at a bustling, street-food stall in a cyberpunk city. A small, furry, six-legged creature with large, curious eyes sits on the table, nibbling on a piece of food.", theme: "Everyday Moments", setting: "Cyberpunk City", effects: "Steam rising from the food catching the glow of a holographic menu, reflections of neon signs in a puddle on the street, shallow depth of field focusing on the couple." },
+            { id: 2, title: "Bioluminescent Embrace", description: "In the heart of an alien forest, a female cyborg with bioluminescent patterns across her cybernetic arms holds her human boyfriend close. The forest is alive with glowing flora and fauna. A tall, graceful, deer-like creature with crystalline antlers stands nearby, observing them with a gentle gaze.", theme: "Harmony with Nature", setting: "Alien World", effects: "God rays filtering through the glowing canopy, floating spores of light, the cyborg's light patterns pulsing in rhythm with the forest's glow." },
+            { id: 3, title: "Stargazer's Rest", description: "On the observation deck of an orbital station, a female cyborg lies with her head in the lap of her human girlfriend. Outside the vast window, a comet streaks across the star-filled void. A creature that looks like a fusion of a fox and a nebula, its body a swirl of dark colors and tiny, star-like lights, is curled up asleep beside them.", theme: "Peace & Serenity", setting: "Space", effects: "The bright, sharp light of the comet casting long shadows, the reflection of the starfield in the cyborg's chrome-and-iris eyes, a faint lens flare on the edge of the window." },
+            { id: 4, title: "Data Stream Cuddle", description: "A female cyborg and her human boyfriend are cuddled on a couch in a minimalist, high-tech apartment. A holographic data stream flows around them, displaying complex charts and images. The cyborg is projecting a small, simple, glowing heart hologram from her palm for a creature made of living liquid metal to playfully bat at.", theme: "Intimacy & Technology", setting: "High-Tech Interior", effects: "The translucent glow of the data stream illuminating the room, motion blur on the fast-moving charts, soft focus on the couple." },
+            { id: 5, title: "Repair & Care", description: "In a workshop filled with tools and spare parts, a human girlfriend gently cleans a smudge from the faceplate of her beautiful cyborg partner, who is sitting patiently. The cyborg's chest plate is open, revealing intricate, softly glowing mechanics. A small, winged, gremlin-like creature with large, expressive ears hands a specialized tool to the human.", theme: "Vulnerability & Trust", setting: "Workshop", effects: "Sparks from a welding tool in the background, the soft, warm glow from the cyborg's core machinery, oil smudges on the human's hands." },
+            { id: 6, title: "Desert Journey", description: "A female cyborg with environmentally-sealed armor, her human boyfriend in rugged survival gear, and a large, six-legged reptilian creature built for traversing sand dunes, all pause to watch twin suns set over a vast alien desert.", theme: "Resilience & Partnership", setting: "Alien World", effects: "The double shadows cast by the twin suns, heat haze rising from the sand, wind whipping sand particles across the scene." },
+            { id: 7, title: "Underwater Cathedral", description: "In a submerged, glass-domed city, a female cyborg with fins integrated into her design swims hand-in-hand with her human partner. They are surrounded by schools of glowing alien fish. A majestic, whale-like creature with intricate, luminous patterns on its skin swims slowly above the city dome.", theme: "Discovery & Wonder", setting: "Underwater City", effects: "Light refracting through the water, beams of light from the city below illuminating the deep, bubbles trailing from the human's rebreather." },
+            { id: 8, title: "Memory Lane", description: "A female cyborg projects a holographic memory—a childhood scene of her human girlfriend on a swing—into the middle of their living room. The girlfriend watches, a tear in her eye, while a creature resembling a sentient, floating orchid releases a puff of calming, glittering pollen.", theme: "Shared Experience", setting: "High-Tech Interior", effects: "The slightly transparent, flickering quality of the hologram, the emotional lighting on the girlfriend's face, the sparkling, slow-falling pollen." },
+            { id: 9, title: "Festival of Lights", description: "A female cyborg, her human boyfriend, and her human girlfriend are in the middle of a vibrant city-wide festival. Lanterns made of energy float through the air. The cyborg is laughing, her voice-modulator creating visible, colorful soundwaves. A friendly, blob-like creature with multiple eyes joyfully bounces among the crowd.", theme: "Community & Joy", setting: "Cyberpunk City", effects: "A kaleidoscope of colored lights, motion blur from the dancing crowds, the visible pattern of the cyborg's laughter." },
+            { id: 10, title: "The Architect's Kiss", description: "In a virtual reality space, a female cyborg and her human partner are designing a world together. The landscape is half-finished, a wireframe grid blending into a lush forest. He reaches out and kisses her, and as he does, the wireframe around them blossoms into full color and life. A creature made of pure code, shaped like a bird, flies out from the point of their kiss.", theme: "Creative Force", setting: "Virtual Reality", effects: "The transition from wireframe to fully rendered reality, glowing lines of code visible in the air, particle effects exploding from their kiss." },
+            { id: 11, title: "Synthesizing a Storm", description: "A female cyborg and her human girlfriend stand on a balcony, watching a magnificent, artificial weather storm unfold over their city. The cyborg has one hand raised, subtly manipulating the clouds with her interface. A feathered, serpentine creature is coiled around her shoulders, watching the lightning with fascination.", theme: "Power & Awe", setting: "Cyberpunk City", effects: "Spectacular, colorful lightning forking across the sky, rain rendered as shimmering, silver threads, the city lights reflecting off the wet surfaces." },
+            { id: 12, title: "A Glitch in the Heart", description: "A beautiful female cyborg sits on the floor, looking distressed, a single tear of iridescent fluid rolling down her cheek. Her human boyfriend kneels before her, holding her hand to his heart, showing her his own pulse. A creature that looks like a walking, moss-covered stone gently nudges her other hand in a sign of comfort.", theme: "AI Emotion & Empathy", setting: "High-Tech Interior", effects: "A subtle digital 'glitch' effect around the cyborg's tear, a warm, empathetic light focused on the couple, the background is out of focus." },
+            { id: 13, title: "Zero-G Slow Dance", description: "Inside a spacious, zero-gravity recreational chamber, a female cyborg and her human girlfriend slowly spin in a weightless dance. Their hair and clothes float freely around them. A creature that resembles a manta ray made of shimmering energy glides gracefully through the air with them.", theme: "Freedom & Novelty", setting: "Space", effects: "Floating globules of a colorful drink nearby, lens flare from the chamber's interior lights, the ethereal trail left by the energy creature." },
+            { id: 14, title: "Market of Wonders", description: "A female cyborg and her human boyfriend browse an exotic alien market. She is curiously examining a floating, crystalline orb, her cybernetic eye scanning its properties. He is laughing at the antics of a small, mischievous, tentacled creature trying to steal a glowing fruit from a vendor's stall.", theme: "Adventure & Humor", setting: "Alien World", effects: "The market is crowded and filled with bizarre alien goods, holographic price tags hover in the air, the scene is filled with rich textures and colors." },
+            { id: 15, title: "Sunrise on a New World", description: "A female cyborg, her human girlfriend, and their strange but friendly creature companion stand on a cliff, their backs to the viewer. They look out over a valley on a newly-terraformed planet as the sun rises, bathing the landscape in golden light. This is their new home.", theme: "Hope & New Beginnings", setting: "Alien World", effects: "An epic, cinematic landscape shot. The atmosphere is hazy with morning mist, the sun's light is warm and dramatic, creating long shadows." }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardContainer = document.getElementById('card-container');
+            const cardTemplate = document.getElementById('prompt-card-template');
+            const modal = document.getElementById('prompt-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            
+            const themeFiltersContainer = document.getElementById('theme-filters');
+            const settingFiltersContainer = document.getElementById('setting-filters');
+            
+            let currentThemeFilter = 'all';
+            let currentSettingFilter = 'all';
+
+            function populateFilters() {
+                const themes = [...new Set(promptsData.map(p => p.theme))];
+                const settings = [...new Set(promptsData.map(p => p.setting))];
+                
+                themes.forEach(theme => {
+                    const btn = document.createElement('button');
+                    btn.className = "filter-btn theme-filter border border-slate-300 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 hover:bg-slate-100";
+                    btn.textContent = theme;
+                    btn.dataset.filter = theme;
+                    themeFiltersContainer.appendChild(btn);
+                });
+
+                settings.forEach(setting => {
+                    const btn = document.createElement('button');
+                    btn.className = "filter-btn setting-filter border border-slate-300 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 hover:bg-slate-100";
+                    btn.textContent = setting;
+                    btn.dataset.filter = setting;
+                    settingFiltersContainer.appendChild(btn);
+                });
+            }
+
+            function renderPrompts() {
+                cardContainer.innerHTML = '';
+                const filteredPrompts = promptsData.filter(prompt => {
+                    const themeMatch = currentThemeFilter === 'all' || prompt.theme === currentThemeFilter;
+                    const settingMatch = currentSettingFilter === 'all' || prompt.setting === currentSettingFilter;
+                    return themeMatch && settingMatch;
+                });
+
+                if (filteredPrompts.length === 0) {
+                     cardContainer.innerHTML = `<p class="text-slate-500 col-span-full text-center">No prompts match the selected filters.</p>`;
+                } else {
+                    filteredPrompts.forEach(prompt => {
+                        const card = cardTemplate.content.cloneNode(true);
+                        card.querySelector('.card-title').textContent = prompt.title;
+                        card.querySelector('.card-theme').textContent = prompt.theme;
+                        const cardElement = card.querySelector('.prompt-card');
+                        cardElement.dataset.id = prompt.id;
+                        cardContainer.appendChild(card);
+                    });
+                }
+            }
+            
+            function openModal(prompt) {
+                document.getElementById('modal-title').textContent = prompt.title;
+                document.getElementById('modal-description').textContent = prompt.description;
+                document.getElementById('modal-theme').textContent = prompt.theme;
+                document.getElementById('modal-effects').textContent = prompt.effects;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+            }
+            
+            cardContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.prompt-card');
+                if (card) {
+                    const promptId = parseInt(card.dataset.id);
+                    const prompt = promptsData.find(p => p.id === promptId);
+                    if (prompt) {
+                        openModal(prompt);
+                    }
+                }
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('pointer-events-none')) {
+                    closeModal();
+                }
+            });
+
+            themeFiltersContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('theme-filter')) {
+                    themeFiltersContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    currentThemeFilter = e.target.dataset.filter;
+                    renderPrompts();
+                }
+            });
+
+            settingFiltersContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('setting-filter')) {
+                    settingFiltersContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    currentSettingFilter = e.target.dataset.filter;
+                    renderPrompts();
+                }
+            });
+            
+            function renderChart() {
+                const themeCounts = promptsData.reduce((acc, prompt) => {
+                    acc[prompt.theme] = (acc[prompt.theme] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const sortedThemes = Object.entries(themeCounts).sort((a, b) => b[1] - a[1]);
+                const labels = sortedThemes.map(item => item[0]);
+                const data = sortedThemes.map(item => item[1]);
+
+                const ctx = document.getElementById('themesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Number of Prompts',
+                            data: data,
+                            backgroundColor: 'rgba(8, 145, 178, 0.6)', // cyan-600 with opacity
+                            borderColor: 'rgba(8, 145, 178, 1)', // cyan-600
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` ${context.raw} prompts`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            populateFilters();
+            renderPrompts();
+            renderChart();
+        });
+    </script>
+</body>
+</html>
+
