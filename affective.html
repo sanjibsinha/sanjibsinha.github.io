@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Rise of Affective Computing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- 
+        Narrative Plan:
+        1. Hook: Introduce Affective Computing as the core tech behind empathetic robots.
+        2. How It Works: Detail the multi-modal sensor inputs for emotion recognition.
+        3. The ASI Upgrade: Show how superintelligence adds context for a holistic understanding.
+        4. The Next Frontier: Visualize the learning process for haptic (touch) feedback.
+        5. The Core Dilemma: Conclude with the philosophical question of being understood vs. being decoded.
+
+        Visualization Choices (No SVG, No Mermaid JS):
+        - Hook: Big Number/Icon display (HTML/CSS/Unicode) to inform.
+        - How It Works: Radar Chart (Chart.js) to compare multiple data inputs. Donut Chart (Chart.js) to show composition.
+        - The ASI Upgrade: Flow Chart (HTML/CSS with Tailwind) to organize the process.
+        - The Next Frontier: Line Chart (Chart.js) to show change/learning over time.
+        - The Core Dilemma: Side-by-side comparison cards (HTML/CSS/Unicode) to compare concepts.
+
+        Color Palette Chosen: "Brilliant Blues" (#05386B, #379683, #5CDB95, #8EE4AF, #EDF5E1) for a vibrant, tech-focused but approachable feel.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #EDF5E1;
+            color: #05386B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #379683;
+            transform: translateY(50%);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black mb-2">Your Partner is a Machine.</h1>
+            <p class="text-xl md:text-2xl font-bold text-[#379683]">But how does it know how you <span class="italic">feel</span>?</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="md:col-span-2 lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 text-center">
+                <h2 class="text-2xl font-bold mb-2">Through a technology known as...</h2>
+                <p class="text-5xl font-black text-[#5CDB95] tracking-tighter">Affective Computing</p>
+                <p class="mt-4 max-w-3xl mx-auto">It's not just a camera; it's a suite of sensors reading the fleeting micro-expressions on your face and the subtle shifts in your voice—betraying your thoughts before you even speak them. Think of it as a high-tech poker game where the machine isn't just seeing your cards; it's reading your bluff.</p>
+            </div>
+
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 flex flex-col">
+                <h3 class="text-xl font-bold text-center mb-4">How It Sees You: The Emotional Data Stream</h3>
+                <p class="text-center text-sm mb-4">An algorithm maps key points on your face, voice, and body, tracking them in real-time. It's not just one clue; it's a symphony of data points synthesized into an emotional conclusion.</p>
+                <div class="chart-container flex-grow">
+                    <canvas id="sensorRadarChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col">
+                <h3 class="text-xl font-bold text-center mb-4">Anatomy of a "Smile"</h3>
+                <p class="text-center text-sm mb-4">Detecting a single emotion involves cross-referencing multiple facial cues. A slight upward curve of the lips is just the beginning of the story.</p>
+                <div class="chart-container flex-grow">
+                    <canvas id="smileDonutChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center mb-2">The ASI Supercharge: From Seeing to Understanding</h3>
+                <p class="text-center text-sm mb-6 max-w-4xl mx-auto">An Artificial Superintelligence (ASI) doesn't just see a frown; it contextualizes it. It cross-references data streams to build a predictive, holistic model of your emotional state. Is this not how humans perceive the world?</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-2 text-center">
+                    <div class="bg-[#EDF5E1] p-4 rounded-lg shadow-inner">
+                        <p class="font-bold">Facial & Vocal Data</p>
+                        <p class="text-xs">"Subject is frowning"</p>
+                    </div>
+                    <div class="flow-arrow font-mono transform md:-translate-y-2">→</div>
+                    <div class="bg-[#EDF5E1] p-4 rounded-lg shadow-inner">
+                        <p class="font-bold">Memory & History</p>
+                        <p class="text-xs">"Frowned after last call with boss"</p>
+                    </div>
+                    <div class="flow-arrow font-mono transform md:-translate-y-2">→</div>
+                    <div class="bg-[#EDF5E1] p-4 rounded-lg shadow-inner">
+                        <p class="font-bold">Environmental Scan</p>
+                        <p class="text-xs">"Room is 2°C warmer than usual"</p>
+                    </div>
+                    <div class="flow-arrow font-mono transform md:-translate-y-2">→</div>
+                    <div class="bg-[#5CDB95] text-white p-4 rounded-lg shadow-lg">
+                        <p class="font-bold">Holistic Insight</p>
+                        <p class="text-xs">"Human is likely frustrated, not sad"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 flex flex-col">
+                <h3 class="text-xl font-bold text-center mb-4">The Next Frontier: Learning the Art of Touch</h3>
+                <p class="text-center text-sm mb-4">How can it offer a comforting hand without understanding touch? Haptic sensors learn the difference between a supportive squeeze and an intrusive grab by analyzing your physiological response over millions of interactions.</p>
+                <div class="chart-container flex-grow">
+                    <canvas id="hapticLearningChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-1 bg-transparent rounded-2xl p-6 text-center flex flex-col justify-center items-center">
+                 <h3 class="text-3xl font-black mb-4">But is that all we are?</h3>
+                 <p class="text-lg">A series of protocols to be deciphered and executed?</p>
+                 <p class="text-5xl mt-6">🤔</p>
+            </div>
+            
+            <div class="md:col-span-2 lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
+                <h3 class="text-3xl font-black text-center mb-6">The Ultimate Question</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="border-4 border-[#379683] rounded-lg p-6 text-center">
+                        <p class="text-6xl mb-4">🤗</p>
+                        <h4 class="text-2xl font-bold text-[#379683]">Will you feel UNDERSTOOD?</h4>
+                        <p class="mt-2">A genuine connection, anticipated and met with perfect empathy.</p>
+                    </div>
+                    <div class="border-4 border-[#05386B] rounded-lg p-6 text-center">
+                        <p class="text-6xl mb-4">⚙️</p>
+                        <h4 class="text-2xl font-bold text-[#05386B]">Or will you feel DECODED?</h4>
+                        <p class="mt-2">A machine running a successful subroutine on a biological system.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-12 text-xs text-[#05386B]/60">
+            <p>Infographic based on the article "Your Robot Partner and the Art of Feeling".</p>
+            <p>All visualizations rendered using Chart.js on HTML Canvas. No SVG or Mermaid.js was used in the creation of this document.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label, maxLength = 16) => {
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine);
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const chartColors = {
+            darkBlue: '#05386B',
+            midGreen: '#379683',
+            lightGreen: '#5CDB95',
+            paleGreen: '#8EE4AF',
+            offWhite: '#EDF5E1'
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: chartColors.darkBlue,
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('sensorRadarChart'), {
+            type: 'radar',
+            data: {
+                labels: [
+                    wrapLabel('Micro-Expressions'), 
+                    wrapLabel('Vocal Tone Analysis'), 
+                    wrapLabel('Pupil Dilation'), 
+                    wrapLabel('Body Language'), 
+                    wrapLabel('Physiological Signals (Heart Rate, Skin Flush)')
+                ],
+                datasets: [{
+                    label: 'Emotion Recognition Inputs',
+                    data: [90, 75, 80, 70, 85],
+                    backgroundColor: 'rgba(92, 219, 149, 0.2)',
+                    borderColor: chartColors.lightGreen,
+                    pointBackgroundColor: chartColors.lightGreen,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: chartColors.lightGreen
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(5, 56, 107, 0.2)' },
+                        grid: { color: 'rgba(5, 56, 107, 0.2)' },
+                        pointLabels: { 
+                            color: chartColors.darkBlue,
+                            font: { size: 10, family: "'Inter', sans-serif" }
+                        },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            color: chartColors.midGreen
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('smileDonutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Lip Corner Movement', 'Eyebrow Arch', 'Eye Crinkling (Duchenne Marker)'],
+                datasets: [{
+                    label: 'Facial Cues for a "Smile"',
+                    data: [65, 20, 15],
+                    backgroundColor: [chartColors.lightGreen, chartColors.midGreen, chartColors.paleGreen],
+                    borderColor: chartColors.offWhite,
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            },
+            options: defaultChartOptions
+        });
+
+        new Chart(document.getElementById('hapticLearningChart'), {
+            type: 'line',
+            data: {
+                labels: ['1K', '1M', '10M', '100M', '500M', '1B'],
+                datasets: [{
+                    label: 'Error Margin in Applied Pressure',
+                    data: [30, 18, 11, 6, 3, 1],
+                    fill: true,
+                    backgroundColor: 'rgba(55, 150, 131, 0.2)',
+                    borderColor: chartColors.midGreen,
+                    tension: 0.3,
+                    pointBackgroundColor: chartColors.midGreen,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Error Margin (%)', color: chartColors.darkBlue },
+                        ticks: { color: chartColors.darkBlue },
+                        grid: { color: 'rgba(5, 56, 107, 0.1)' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Simulated Interactions', color: chartColors.darkBlue },
+                        ticks: { color: chartColors.darkBlue },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
