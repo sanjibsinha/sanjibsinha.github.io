@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Prompt Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Neutrals -->
+    <!-- Application Structure Plan: A dashboard-style layout featuring a header, an introduction, a filterable prompt gallery, and a data visualization section. The core interaction is filtering the prompts by category (relationship, setting) to allow users to quickly find inspiration. Clicking on a prompt "card" opens a modal with full details, keeping the main interface clean. This structure was chosen to transform a static list into an engaging tool, allowing users to actively explore the content based on their interests rather than passively reading a long document. -->
+    <!-- Visualization & Content Choices: 1. Prompt List -> Goal: Organize/Explore -> Presentation: Interactive Card Grid with Modals -> Interaction: Users can filter the grid and click cards to see details. Justification: Far more engaging and user-friendly than a static list. 2. Implicit Theme Data -> Goal: Inform/Analyze -> Presentation: Bar Chart (Chart.js) showing prompt counts by setting type (e.g., Indoor, Outdoor). Interaction: Hover tooltips show exact counts. Justification: Adds an analytical layer, helping users understand the overall composition of the prompt collection at a glance. Method: Chart.js/Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .prompt-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .prompt-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div id="app" class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-stone-900">Cyborg Romance Prompt Explorer</h1>
+            <p class="mt-2 text-lg text-stone-600">An interactive gallery of sci-fi and fantasy scenarios.</p>
+        </header>
+        
+        <main>
+            <section id="introduction" class="max-w-4xl mx-auto mb-10 text-center">
+                <p class="text-stone-700">
+                    This application brings a collection of 15 creative prompts to life, blending themes of historical romance, futuristic cyborgs, and whimsical creatures. Instead of a simple list, you can use the filters below to discover scenarios that match your interests or explore the chart to see a breakdown of the settings. Click on any prompt card to view the full details and special effects.
+                </p>
+            </section>
+
+            <section id="filters" class="mb-8 p-4 bg-white rounded-lg shadow-sm">
+                <h3 class="text-lg font-semibold text-center mb-4 text-stone-700">Explore by Theme</h3>
+                <div id="filter-buttons" class="flex flex-wrap justify-center gap-2">
+                </div>
+            </section>
+            
+            <section id="prompt-gallery" class="mb-12">
+                <div id="prompt-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+
+            <section id="visualization" class="p-6 bg-white rounded-lg shadow-sm">
+                <h2 class="text-2xl font-bold text-center text-stone-800 mb-4">Prompt Setting Analysis</h2>
+                <p class="text-center text-stone-600 mb-6 max-w-2xl mx-auto">This chart visualizes the distribution of prompts based on their primary setting type—indoors, outdoors, or a mix. This helps to quickly see the balance of scenes available in the collection.</p>
+                <div class="chart-container">
+                    <canvas id="themeChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="prompt-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 id="modal-title" class="text-2xl font-bold text-stone-900"></h2>
+                    <button id="modal-close-btn" class="text-stone-500 hover:text-stone-800 text-3xl">&times;</button>
+                </div>
+                <div id="modal-content" class="text-stone-700 space-y-4">
+                    <p id="modal-description"></p>
+                    <div>
+                        <h3 class="font-semibold text-stone-800">Special Effects:</h3>
+                        <p id="modal-effects" class="text-stone-600"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prompts = [
+                { id: 1, title: "The Serenade by the Moat", description: "A beautiful female cyborg with intricate, glowing filigree patterns on her porcelain skin sits on the edge of a castle moat at twilight. Her handsome human boyfriend, a knight in casual attire, serenades her with a lute. At their feet, a small, furry creature with six legs and large, luminous eyes looks on affectionately.", effects: "Bioluminescent light from the cyborg's filigree, a soft glow from the creature's eyes, and a romantic lens flare from the setting sun reflecting on the water.", relationship: "Boyfriend", setting: "Outdoor" },
+                { id: 2, title: "A Toast in the Hearth-Lit Tavern", description: "Inside a lively, rustic medieval tavern, a female cyborg with polished chrome limbs raises a wooden tankard, sharing a laugh with her charismatic human girlfriend. A friendly, griffin-like creature with feathered ears and a playful expression joins them at their table, attempting to sip from a bowl of water.", effects: "Dynamic, warm lighting from the tavern's large fireplace, sparks captured mid-air from clashing tankards, and a subtle, holographic shimmer in the cyborg's irises.", relationship: "Girlfriend", setting: "Indoor" },
+                { id: 3, title: "The Secret Garden Kiss", description: "In a moonlit, overgrown castle garden, a female cyborg, whose body is intertwined with glowing, mechanical vines, shares a tender kiss with a shy, handsome scholar. Watching from a nearby gargoyle is a winged fox, its tail gently swaying.", effects: "Ethereal moonlight filtering through ancient trees, bioluminescent flora, and a visible data-stream effect on the cyborg’s cheek, as if she's processing the emotional input.", relationship: "Boyfriend", setting: "Outdoor" },
+                { id: 4, title: "Discovery at the Market", description: "At a bustling medieval market, a female cyborg, her arm morphed into a sophisticated analysis tool, examines a mysterious, glowing artifact with her curious human boyfriend. A small, six-legged lizard with iridescent scales is perched on his shoulder, observing the scene with interest.", effects: "A vibrant, crowded market with motion blur to convey energy, a heads-up display (HUD) visible from the cyborg’s perspective, and the creature’s scales shimmering with a rainbow-like effect.", relationship: "Boyfriend", setting: "Outdoor" },
+                { id: 5, title: "The Blacksmith's Embrace", description: "In a dimly lit forge, a powerful female cyborg with a softly glowing core embraces her muscular blacksmith partner from behind as he works. A small, moss-covered golem watches them from a corner, its single eye glowing warmly.", effects: "Sparks flying from the anvil, an intense heat-haze distorting the air around the forge, and the cyborg's core pulsing with a gentle, warm light that syncs with her breathing.", relationship: "Partner", setting: "Indoor" },
+                { id: 6, title: "Stargazing on the Ramparts", description: "A female cyborg and her astronomer girlfriend lie on a blanket atop the castle ramparts, gazing at a star-filled sky. A creature resembling a floating, bioluminescent jellyfish drifts lazily beside them, its tentacles leaving faint trails of light.", effects: "A breathtaking galactic nebula splashed across the night sky, frequent shooting stars, and the cyborg projecting a 3D star chart hologram into the air between them.", relationship: "Girlfriend", setting: "Outdoor" },
+                { id: 7, title: "The Alchemist's Secret", description: "A female cyborg with delicate, porcelain-like features and glowing blue eyes assists her alchemist girlfriend in a lab filled with bubbling potions. A small, feathered serpent is coiled around a bubbling retort, its scales shimmering with every color.", effects: "Colorful, glowing liquids in glass vials that cast vibrant shadows, ancient magical symbols glowing on the pages of an open book, and a faint electrical aura around the cyborg’s hands as she handles the volatile ingredients.", relationship: "Girlfriend", setting: "Indoor" },
+                { id: 8, title: "A Dance in the Great Hall", description: "In a grand medieval ballroom, a graceful female cyborg in an elegant, flowing gown waltzes with a dashing prince. A creature that is a whimsical mix of a deer and a butterfly, with large, iridescent wings, flits around them, leaving a trail of sparkling dust.", effects: "Volumetric lighting from massive chandeliers creating dramatic light beams, elegant light trails from the dancers' movements, and shimmering, magical dust from the creature's wings.", relationship: "Partner", setting: "Indoor" },
+                { id: 9, title: "A Quiet Moment in the Scriptorium", description: "In a vast, candle-lit library, a female cyborg with advanced optical sensors for eyes reads an ancient scroll with her scholarly human boyfriend. A small, friendly ent-like creature made of living wood holds a candle for them, its leafy hands carefully shielding the flame.", effects: "Beams of light cutting through the dusty air, the cyborg's eyes projecting the scroll's text as a hologram for her partner to see, and the wooden creature’s leaves gently rustling, animated with life.", relationship: "Boyfriend", setting: "Indoor" },
+                { id: 10, title: "Journey on the Misty River", description: "A female cyborg and her adventurous girlfriend navigate a small wooden boat down a misty, atmospheric river. A friendly, otter-like creature with glowing webbed paws helps them paddle, its movements creating soft ripples of light in the water.", effects: "Thick, ethereal fog clinging to the water's surface, glowing runes carved into the boat's side for protection, and the cyborg's internal navigation system displayed as a faint, transparent overlay on her vision.", relationship: "Girlfriend", setting: "Outdoor" },
+                { id: 11, title: "Picnic in the Enchanted Forest", description: "A female cyborg and her cheerful, red-headed human girlfriend share a picnic in a sun-dappled forest clearing. A group of small, mushroom-like creatures with glowing caps have gathered around their blanket, curiously observing the couple.", effects: "Golden sunbeams filtering through the forest canopy, the mushrooms pulsing with a soft, magical light, and a faint, shimmering energy shield around the cyborg to gently repel insects.", relationship: "Girlfriend", setting: "Outdoor" },
+                { id: 12, title: "The Art of Repair", description: "In a quiet, sunlit chamber, a human boyfriend gently cleans and repairs a damaged section of his cyborg partner's arm, his touch full of care. A small, metallic spider-like creature assists by weaving a new, glowing filament to replace a broken wire.", effects: "An intricate close-up on the cyborg’s complex inner workings, soft, focused light illuminating the delicate repair work, and the metallic creature spinning a thread that glows with energy.", relationship: "Boyfriend", setting: "Indoor" },
+                { id: 13, title: "Defenders of the Village", description: "A female cyborg with a deployable energy shield and a glowing sword stands back-to-back with her warrior girlfriend, protecting a village from invaders. A large, bear-like creature with rocky plates on its back fights alongside them, roaring defiantly.", effects: "A dynamic action scene with motion blur, the clash of energy weapons creating bright flashes of light, and the creature letting out a sonic roar that visibly distorts the air around it.", relationship: "Girlfriend", setting: "Mixed" },
+                { id: 14, title: "The Queen's Counsel", description: "A regal female cyborg, acting as a royal advisor, stands beside her human queen on an ornate throne. A wise, owl-like creature with four intelligent eyes is perched on the queen's shoulder, seemingly offering its own counsel.", effects: "An ornate throne room with shafts of light from high, stained-glass windows, and the cyborg displaying tactical information on a large, semi-transparent holographic map for the queen to review.", relationship: "Partner", setting: "Indoor" },
+                { id: 15, title: "A Promise by the Waterfall", description: "Beneath a majestic waterfall, a female cyborg and her human partner exchange tokens of affection—he gives her a hand-carved wooden bird, and she gives him a crystal that glows with her own energy. A creature that is part fish, part bird, with shimmering scales and feathers, leaps joyfully from the water in the background.", effects: "Hyper-realistic water spray and mist from the waterfall, the crystal pulsing with a soft, internal light, and beautiful rainbow refractions appearing in the water droplets hanging in the air.", relationship: "Partner", setting: "Outdoor" }
+            ];
+
+            const grid = document.getElementById('prompt-grid');
+            const filterButtonsContainer = document.getElementById('filter-buttons');
+            
+            const modal = document.getElementById('prompt-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalEffects = document.getElementById('modal-effects');
+            const closeModalBtn = document.getElementById('modal-close-btn');
+
+            let activeFilter = 'All';
+
+            const renderPrompts = () => {
+                grid.innerHTML = '';
+                const filteredPrompts = prompts.filter(p => 
+                    activeFilter === 'All' || p.relationship === activeFilter || p.setting === activeFilter
+                );
+
+                if (filteredPrompts.length === 0) {
+                    grid.innerHTML = `<p class="text-stone-500 italic col-span-full text-center">No prompts match the selected filter.</p>`;
+                    return;
+                }
+                
+                filteredPrompts.forEach(prompt => {
+                    const card = document.createElement('div');
+                    card.className = 'prompt-card bg-white p-6 rounded-lg shadow-md cursor-pointer';
+                    card.dataset.id = prompt.id;
+                    card.innerHTML = `
+                        <h3 class="font-bold text-xl mb-2 text-stone-800">${prompt.title}</h3>
+                        <p class="text-stone-600 text-sm mb-4 h-12 overflow-hidden">${prompt.description}</p>
+                        <div class="flex justify-start items-center gap-2 mt-4">
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200">${prompt.relationship}</span>
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-amber-600 bg-amber-200">${prompt.setting}</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            };
+
+            const setupFilters = () => {
+                const relationships = ['All', ...new Set(prompts.map(p => p.relationship))];
+                const settings = [...new Set(prompts.map(p => p.setting))];
+                const allFilters = [...relationships, ...settings];
+                
+                filterButtonsContainer.innerHTML = '';
+                allFilters.forEach(filter => {
+                    const button = document.createElement('button');
+                    button.textContent = filter;
+                    button.dataset.filter = filter;
+                    button.className = `filter-btn px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200`;
+                    if (activeFilter === filter) {
+                        button.classList.add('bg-stone-800', 'text-white');
+                    } else {
+                        button.classList.add('bg-stone-200', 'text-stone-700', 'hover:bg-stone-300');
+                    }
+                    filterButtonsContainer.appendChild(button);
+                });
+            };
+            
+            filterButtonsContainer.addEventListener('click', e => {
+                if (e.target.matches('.filter-btn')) {
+                    activeFilter = e.target.dataset.filter;
+                    setupFilters();
+                    renderPrompts();
+                }
+            });
+
+            grid.addEventListener('click', e => {
+                const card = e.target.closest('.prompt-card');
+                if (card) {
+                    const promptId = parseInt(card.dataset.id, 10);
+                    const prompt = prompts.find(p => p.id === promptId);
+                    if (prompt) {
+                        modalTitle.textContent = prompt.title;
+                        modalDescription.textContent = prompt.description;
+                        modalEffects.textContent = prompt.effects;
+                        modal.classList.remove('opacity-0', 'pointer-events-none');
+                    }
+                }
+            });
+
+            const closeModal = () => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === "Escape") {
+                    closeModal();
+                }
+            });
+            
+            const setupChart = () => {
+                const ctx = document.getElementById('themeChart').getContext('2d');
+                const settingCounts = prompts.reduce((acc, p) => {
+                    acc[p.setting] = (acc[p.setting] || 0) + 1;
+                    return acc;
+                }, {});
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(settingCounts),
+                        datasets: [{
+                            label: '# of Prompts',
+                            data: Object.values(settingCounts),
+                            backgroundColor: [
+                                'rgba(20, 184, 166, 0.6)',
+                                'rgba(245, 158, 11, 0.6)',
+                                'rgba(120, 113, 108, 0.6)',
+                            ],
+                            borderColor: [
+                                'rgba(20, 184, 166, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(120, 113, 108, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+
+            setupFilters();
+            renderPrompts();
+            setupChart();
+        });
+    </script>
+</body>
+</html>
+
