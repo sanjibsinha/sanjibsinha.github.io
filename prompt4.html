@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Romance: Prompt Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Future (Cream, Slate, Soft Teal Accent) -->
+    <!-- Application Structure Plan: A single-page dashboard design. The core is an interactive gallery of "prompt cards". Users can filter these cards by key themes (Activity, Setting) using buttons at the top. A summary bar chart visualizes the distribution of these themes, also allowing for interactive filtering. Clicking a card opens a modal with the full prompt text. This structure was chosen to transform a static list into an exploratory tool, allowing users to quickly find prompts matching specific criteria and understand the overall thematic composition of the set, which is more user-friendly than reading through all 15 linearly. -->
+    <!-- Visualization & Content Choices: 1. Prompt List -> Goal: Organize/Inform -> Viz: Interactive Card Grid (HTML/Tailwind) -> Interaction: Filter buttons (JS) update card visibility; click card opens modal. Justification: Organizes dense text into digestible, filterable chunks. 2. Thematic Overview -> Goal: Compare/Inform -> Viz: Bar Chart (Chart.js/Canvas) -> Interaction: Displays counts of prompts per theme; clicking a bar filters the grid. Justification: Provides a quick quantitative summary of the qualitative data. 3. Full Prompt Display -> Goal: Inform -> Viz: Modal Window (HTML/JS) -> Interaction: Displays full text on card click. Justification: Keeps the main interface clean while providing easy access to details. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7;
+            color: #334155;
+        }
+        .active-filter {
+            background-color: #14B8A6 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 40vh;
+        }
+        .prompt-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-content {
+            transition: transform 0.25s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="container mx-auto p-4 sm:p-6 md:p-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Futuristic Romance</h1>
+            <p class="mt-2 text-lg text-slate-500">An Interactive Prompt Explorer</p>
+        </header>
+
+        <main>
+            <section id="filters" class="mb-8">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-700 mb-3 text-center">Filter by Theme</h3>
+                    <div id="filter-buttons" class="flex flex-wrap justify-center gap-2">
+                    </div>
+                </div>
+            </section>
+            
+            <section id="overview" class="mb-12">
+                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Thematic Overview</h3>
+                     <p class="text-center text-slate-500 max-w-3xl mx-auto mb-6">
+                        This chart breaks down the 15 prompts by their primary activity or setting. It provides a quick visual summary of the core themes present in the collection, such as moments of quiet domesticity, leisure, or adventure. Click on a bar to filter the prompts below and explore the specific scenarios within that theme.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="themeChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="prompts">
+                <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center" id="prompts-title">All Prompts</h3>
+                <p class="text-center text-slate-500 max-w-3xl mx-auto mb-8">
+                    Below is the full collection of generated prompts. Each card represents a unique scene. Click on any card to open a detailed view of the prompt, perfect for copying or closer inspection. Use the filters above to narrow down the collection based on your interests.
+                </p>
+                <div id="prompts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="prompt-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 relative transform scale-95">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h2 id="modal-title" class="text-2xl font-bold text-slate-800 mb-4"></h2>
+            <p id="modal-text" class="text-slate-600 leading-relaxed"></p>
+        </div>
+    </div>
+
+
+    <script>
+        const promptsData = [
+            { id: 1, title: "Vanity Scene", text: "A beautiful cyborg with intricate, glowing filigree on her skin sits at a holographic vanity, combing her synthetic, light-reactive hair. Her human boyfriend, with a kind smile and augmented reality glasses, watches her with adoration. Beside them, a small, furry creature with six legs and bioluminescent spots purrs, its tail coiling around the cyborg's chair. The room overlooks a sprawling, neon-lit cityscape at dusk. Special effects: lens flare from the city lights, soft glow from the cyborg's circuitry. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 2, title: "Smart Mirror Reflection", text: "A stunning female cyborg looks at her reflection in a smart mirror, which displays her internal diagnostics alongside her image. Her human girlfriend gently touches her metallic shoulder, their eyes meeting in the reflection. A gelatinous, amoeba-like creature with a single, large, curious eye floats gently in the air nearby, shimmering with iridescent colors. Special effects: digital data streams overlaying the mirror's surface, ethereal light from the floating creature. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 3, title: "Nebula Projection", text: "In a minimalist, high-tech bedroom, a beautiful cyborg lies on a magnetic levitation bed, holding hands with her human boyfriend. They are gazing at a ceiling projection of a swirling nebula. A creature resembling a crystalline fox is curled up at the foot of the bed, its facets catching and refracting the starlight. Special effects: volumetric lighting from the nebula projection, shimmering light effects on the crystal fox. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 4, title: "Bio-Dome Ice Cream", text: "On a park bench made of polished chrome in a bio-dome, a cheerful female cyborg licks a scoop of glowing, flavor-changing ice cream. Her human girlfriend laughs beside her, sharing a different flavor. Their pet, a creature that looks like a cross between a pangolin and a plant, with leafy scales, sniffs at a fallen drop of ice cream. Special effects: motion blur on the flying vehicles in the background, vibrant, unnatural colors of the ice cream. Aspect Ratio 16:9.", theme: "Leisure", setting: "Outdoors" },
+            { id: 5, title: "Sky-Bridge Stroll", text: "A beautiful cyborg in sleek, fashionable attire walks along a sky-bridge connecting two massive arcologies. She holds the energy leash of a robotic dog with glowing optical sensors. Her human boyfriend walks beside her, his arm around her waist. A small, winged, insectoid creature with large, friendly eyes flutters around their heads. Special effects: depth of field showing the immense scale of the city below, trail of light from the energy leash. Aspect Ratio 16:9.", theme: "Leisure", setting: "Outdoors" },
+            { id: 6, title: "Futuristic Cooking", text: "In a futuristic kitchen with automated utensils, a female cyborg and her human girlfriend are playfully cooking a meal. The cyborg is precisely dicing vegetables with a laser cutter integrated into her finger. A small, sentient cloud of sparkling gas hovers near the ceiling, occasionally changing shape and color in response to their laughter. Special effects: steam and particle effects from the cooking, soft, pulsating light from the sentient gas cloud. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 7, title: "Holographic Movie Night", text: "A cyborg and her human boyfriend are cuddled on a couch, watching a 3D holographic movie that projects into the center of their living room. A creature that looks like a miniature, feathered velociraptor is perched on the back of the couch, captivated by the holographic figures. Special effects: dramatic lighting from the hologram illuminating the couple's faces, realistic textures of the creature's feathers. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 8, title: "Rooftop Gardening", text: "In a rooftop garden with alien-looking plants, a beautiful cyborg gently tends to a glowing flower. Her human girlfriend is watering other plants with a hydro-sprayer. A friendly, six-eyed, slug-like creature slowly moves along a planter, leaving a trail of harmless, glittering slime. Special effects: bioluminescence from the alien flora, shallow depth of field focusing on the cyborg's delicate touch. Aspect Ratio 16:9.", theme: "Leisure", setting: "Outdoors" },
+            { id: 9, title: "Dancing in the Rain", text: "Under the neon-drenched, perpetual rain of a cyberpunk city street, a cyborg and her human boyfriend dance joyfully. The cyborg's skin repels the water, which beads up and rolls off in shimmering droplets. A strange, amphibian creature with a wide, happy grin splashes in a puddle nearby. Special effects: reflections of neon signs in the wet pavement, dramatic backlighting, slow-motion effect on the water droplets. Aspect Ratio 16:9.", theme: "Leisure", setting: "Outdoors" },
+            { id: 10, title: "Reading a Book", text: "A cyborg sits in a comfortable chair, reading an old, paper book, her fingers gently tracing the words. Her human girlfriend leans on her shoulder, reading along. A creature made of living, woven vines with bright blue berries for eyes is nestled in a pot beside them, seemingly listening. Special effects: warm, soft lighting from a single lamp, dust motes dancing in the light beam, a subtle glow from the cyborg's optical sensors as she reads. Aspect Ratio 16:9.", theme: "Domestic", setting: "Indoors" },
+            { id: 11, title: "Spacecraft Observation", text: "On the observation deck of a personal spacecraft, a cyborg and her human partner look out at a vibrant, alien starfield. The cyborg points out a constellation, a faint data-stream projecting from her fingertip to highlight the stars. Their pet, a creature resembling a floating, ethereal manta ray, drifts lazily in the zero-gravity environment of the deck. Special effects: breathtaking view of the cosmos, lens flare from a nearby star, translucent quality of the manta ray creature. Aspect Ratio 16:9.", theme: "Adventure", setting: "Space" },
+            { id: 12, title: "Antique Gadget Repair", text: "A female cyborg is focused on repairing a complex, antique gadget, her fingers manipulating tiny components with superhuman precision. Her human boyfriend watches in fascination, holding a light for her. A small, mechanical creature with spider-like legs assists by handing her tools. Special effects: sparks from the repair work, intricate detail of the gadget's interior, focused beam of light in a dimly lit workshop. Aspect Ratio 16:9.", theme: "Task-Oriented", setting: "Indoors" },
+            { id: 13, title: "Museum Visit", text: "In a museum of extinct species, a cyborg and her girlfriend look at a hologram of a T-Rex. The cyborg's face shows a complex expression of curiosity, perhaps accessing historical data. A small, furry creature with oversized ears is perched on her shoulder, looking at the hologram with wide-eyed wonder. Special effects: semi-transparent hologram effect, dramatic museum lighting, reflections on the polished floor. Aspect Ratio 16:9.", theme: "Leisure", setting: "Indoors" },
+            { id: 14, title: "Vertical City Morning", text: "A beautiful cyborg sips a steaming beverage from a self-heating mug on a balcony overlooking a vertical city. Her human boyfriend is beside her, wrapped in a blanket, leaning against her. A creature that looks like a fluffy, multi-tailed squirrel chatters happily on the railing, nibbling on a synthetic nut. Special effects: soft morning light, steam rising from the mug, immense sense of height and scale from the city view. Aspect Ratio 16:9.", theme: "Domestic", setting: "Outdoors" },
+            { id: 15, title: "Shared Meditation", text: "A cyborg sits in a serene, minimalist room in a perfect lotus position, her eyes closed and a soft blue light pulsing from her chest plate. Her human girlfriend meditates beside her, a peaceful expression on her face. A creature composed of pure, stable energy hovers between them, radiating a calming aura. Special effects: soft, pulsing light, lens flare, a sense of tranquility and peace, ethereal energy effects from the creature. Aspect Ratio 16:9.", theme: "Task-Oriented", setting: "Indoors" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('prompts-grid');
+            const filterButtonsContainer = document.getElementById('filter-buttons');
+            const promptsTitle = document.getElementById('prompts-title');
+            
+            const modal = document.getElementById('prompt-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalText = document.getElementById('modal-text');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            let currentFilter = 'All';
+            let themeChart;
+
+            function renderPrompts() {
+                grid.innerHTML = '';
+                const filteredPrompts = promptsData.filter(p => currentFilter === 'All' || p.theme === currentFilter);
+                
+                filteredPrompts.forEach(prompt => {
+                    const card = document.createElement('div');
+                    card.className = 'prompt-card bg-white rounded-xl shadow-sm border border-slate-200 p-6 cursor-pointer';
+                    card.dataset.id = prompt.id;
+                    card.innerHTML = `
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">${prompt.title}</h4>
+                        <p class="text-slate-500 text-sm mb-4 line-clamp-3">${prompt.text}</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium bg-teal-100 text-teal-800 px-2 py-1 rounded-full">${prompt.theme}</span>
+                            <span class="text-xs font-medium bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">${prompt.setting}</span>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => openModal(prompt.id));
+                    grid.appendChild(card);
+                });
+            }
+
+            function updateFilterButtons() {
+                const themes = ['All', ...new Set(promptsData.map(p => p.theme))];
+                filterButtonsContainer.innerHTML = '';
+                themes.forEach(theme => {
+                    const button = document.createElement('button');
+                    button.textContent = theme;
+                    button.className = 'filter-btn px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 bg-slate-100 text-slate-600 hover:bg-slate-200';
+                    if (theme === currentFilter) {
+                        button.classList.add('active-filter');
+                    }
+                    button.addEventListener('click', () => {
+                        currentFilter = theme;
+                        promptsTitle.textContent = `${theme} Prompts`;
+                        updateActiveButtonStates();
+                        renderPrompts();
+                        highlightChartBar();
+                    });
+                    filterButtonsContainer.appendChild(button);
+                });
+            }
+
+            function updateActiveButtonStates() {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    if (btn.textContent === currentFilter) {
+                        btn.classList.add('active-filter');
+                    } else {
+                        btn.classList.remove('active-filter');
+                    }
+                });
+            }
+            
+            function openModal(id) {
+                const prompt = promptsData.find(p => p.id === id);
+                modalTitle.textContent = prompt.title;
+                modalText.textContent = prompt.text;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+            }
+
+            function renderChart() {
+                const ctx = document.getElementById('themeChart').getContext('2d');
+                const themeCounts = promptsData.reduce((acc, p) => {
+                    acc[p.theme] = (acc[p.theme] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const labels = Object.keys(themeCounts);
+                const data = Object.values(themeCounts);
+
+                themeChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '# of Prompts',
+                            data: data,
+                            backgroundColor: 'rgba(20, 184, 166, 0.6)',
+                            borderColor: 'rgba(13, 148, 136, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            },
+                             x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                displayColors: false,
+                                callbacks: {
+                                    title: () => '',
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw} prompts`;
+                                    }
+                                }
+                            }
+                        },
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                const clickedIndex = elements[0].index;
+                                const clickedTheme = labels[clickedIndex];
+                                currentFilter = clickedTheme;
+                                promptsTitle.textContent = `${clickedTheme} Prompts`;
+                                updateActiveButtonStates();
+                                renderPrompts();
+                            }
+                        }
+                    }
+                });
+            }
+
+            function highlightChartBar() {
+                const themeCounts = promptsData.reduce((acc, p) => {
+                    acc[p.theme] = (acc[p.theme] || 0) + 1;
+                    return acc;
+                }, {});
+                const labels = Object.keys(themeCounts);
+
+                const backgroundColors = labels.map(label => {
+                    return (label === currentFilter || currentFilter === 'All') 
+                        ? 'rgba(20, 184, 166, 0.6)' 
+                        : 'rgba(203, 213, 225, 0.6)';
+                });
+                const borderColors = labels.map(label => {
+                    return (label === currentFilter || currentFilter === 'All') 
+                        ? 'rgba(13, 148, 136, 1)' 
+                        : 'rgba(156, 163, 175, 1)';
+                });
+
+                themeChart.data.datasets[0].backgroundColor = backgroundColors;
+                themeChart.data.datasets[0].borderColor = borderColors;
+                themeChart.update();
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+
+            renderPrompts();
+            updateFilterButtons();
+            renderChart();
+        });
+    </script>
+</body>
+</html>
+
