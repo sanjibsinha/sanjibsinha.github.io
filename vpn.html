@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Privacy Setup Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: The application is structured as a two-part, tab-based single-page application (SPA). The main navigation allows users to switch between "MAC Spoofing Setup" and "VPN Setup" sections. This task-oriented design was chosen because the source report is a procedural guide with two distinct goals. The structure allows users to focus on one task at a time, reducing cognitive load. Key interactions include one-click copy buttons for shell commands and a dynamic code generator for the systemd service file. This generator is the core interactive element, as it simplifies the most error-prone step by having the user input their network interface name, which then populates a ready-to-copy configuration. This interactive approach is more usable and less intimidating than a static text guide. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Step-by-step commands for installation and verification. -> Goal: Inform & Simplify Action. -> Presentation: Text block with a "Copy Command" button. -> Interaction: Click-to-copy. -> Justification: Reduces user error from manual typing/copying. -> Library/Method: Vanilla JS for clipboard interaction.
+        - Report Info: The systemd service file configuration. -> Goal: Organize & Simplify Customization. -> Presentation: An input field for the user's interface name that dynamically generates the full service file content in a code block. -> Interaction: Real-time text update on input, with a copy button for the result. -> Justification: This is the most complex user task; abstracting the file editing into a simple input field dramatically improves usability and prevents syntax errors. -> Library/Method: Vanilla JS for DOM manipulation.
+        - Report Info: Two different VPN providers. -> Goal: Compare & Organize. -> Presentation: Grouped information within the VPN section. -> Interaction: User can read the steps for their chosen provider. -> Justification: Keeps related information together while maintaining a clean layout. -> Library/Method: HTML/Tailwind for structure.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-button.active {
+            background-color: #0284c7; /* sky-600 */
+            color: white;
+            box-shadow: 0 4px 14px 0 rgb(2 132 199 / 39%);
+        }
+        .code-block {
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #475569; /* slate-600 */
+            color: white;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: #64748b; /* slate-500 */
+        }
+        .input-field {
+            border: 1px solid #cbd5e1; /* slate-300 */
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #0ea5e9; /* sky-500 */
+            box-shadow: 0 0 0 2px #bae6fd; /* sky-200 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto max-w-4xl p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Interactive Privacy Guide</h1>
+            <p class="mt-4 text-lg text-slate-600">Automate MAC address changes and set up a VPN on your Ubuntu system with this step-by-step interactive guide.</p>
+        </header>
+
+        <nav class="flex justify-center gap-4 mb-10">
+            <button id="nav-mac" class="nav-button active py-3 px-6 rounded-full font-semibold text-slate-700 bg-white shadow-md">
+                1. MAC Spoofing Setup
+            </button>
+            <button id="nav-vpn" class="nav-button py-3 px-6 rounded-full font-semibold text-slate-700 bg-white shadow-md">
+                2. VPN Setup
+            </button>
+        </nav>
+
+        <main>
+            <section id="mac-section">
+                <div class="space-y-8">
+                    <div class="text-center p-6 bg-sky-100 border border-sky-200 rounded-lg">
+                        <h2 class="text-2xl font-bold text-sky-800">Part 1: Automatically Change MAC Address</h2>
+                        <p class="mt-2 text-sky-700">This section guides you through creating a service that automatically assigns a new random MAC address every time your computer boots. This helps protect your privacy on local networks.</p>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 1: Install macchanger</h3>
+                        <p class="text-slate-600 mb-4">First, open your terminal and run the following two commands to install the necessary tool. During installation, if asked whether `macchanger` should run automatically, select **<No>**. We will set up a more reliable method in the next steps.</p>
+                        <div class="code-block">
+                            <code>sudo apt update && sudo apt install macchanger</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 2: Find Your Network Interface Name</h3>
+                        <p class="text-slate-600 mb-4">You need to identify the name of your network hardware (e.g., `wlan0` or `enp3s0`). Run this command and look for your primary connection's name in the output.</p>
+                        <div class="code-block">
+                            <code>ip addr</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 3: Generate Your Systemd Service File</h3>
+                        <p class="text-slate-600 mb-4">This service will run `macchanger` automatically on startup. Enter the network interface name you found in the previous step below to generate the required configuration file.</p>
+                        <input type="text" id="interface-input" placeholder="e.g., wlan0" class="input-field mb-4">
+                        
+                        <p class="text-slate-600 mb-4">Next, run this command to create and open the service file in a text editor:</p>
+                        <div class="code-block">
+                            <code>sudo nano /etc/systemd/system/mac-spoof.service</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        
+                        <p class="text-slate-600 my-4">Finally, paste the auto-generated configuration below into the editor. Then save and close it (Ctrl+X, Y, Enter).</p>
+                        <div class="code-block">
+                            <code id="service-file-code">
+[Unit]
+Description=MAC Address Changer
+Wants=network-pre.target
+Before=network-pre.target
+BindsTo=sys-subsystem-net-devices-your_interface_name.device
+After=sys-subsystem-net-devices-your_interface_name.device
+
+[Service]
+ExecStart=/usr/bin/macchanger -r your_interface_name
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+                            </code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 4: Enable and Verify the Service</h3>
+                        <p class="text-slate-600 mb-4">Run the following command to enable your new service to start on every boot.</p>
+                        <div class="code-block">
+                            <code>sudo systemctl enable mac-spoof.service</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="text-slate-600 my-4">You can test it immediately by starting the service manually.</p>
+                        <div class="code-block">
+                            <code>sudo systemctl start mac-spoof.service</code>
+                             <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="text-slate-600 my-4">To confirm your MAC address has changed, run `ip addr show your_interface_name`, replacing `your_interface_name` with your actual interface. You should see a new `link/ether` value.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="vpn-section" class="hidden">
+                 <div class="space-y-8">
+                    <div class="text-center p-6 bg-sky-100 border border-sky-200 rounded-lg">
+                        <h2 class="text-2xl font-bold text-sky-800">Part 2: Using a Free VPN</h2>
+                        <p class="mt-2 text-sky-700">A VPN encrypts your internet traffic, hiding it from your ISP and other third parties. This section explains how to connect using an OpenVPN configuration file.</p>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 1: Choose a VPN & Get Configuration</h3>
+                        <p class="text-slate-600 mb-4">You'll need an `.ovpn` configuration file from a VPN provider. Reputable services with free tiers are a good place to start. Visit their website, create a free account, and download the OpenVPN configuration files for their servers.</p>
+                        <ul class="list-disc list-inside text-slate-600 space-y-2">
+                           <li><strong>ProtonVPN:</strong> Known for a strong focus on security and privacy.</li>
+                           <li><strong>Windscribe:</strong> Offers a generous free monthly data allowance.</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 2: Install the OpenVPN Client</h3>
+                        <p class="text-slate-600 mb-4">If you don't have it already, install the OpenVPN client on your system with this command.</p>
+                        <div class="code-block">
+                            <code>sudo apt update && sudo apt install openvpn</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="step-card p-6">
+                        <h3 class="font-bold text-xl mb-2">Step 3: Connect to the VPN</h3>
+                        <p class="text-slate-600 mb-4">Once you have your `.ovpn` file, you can connect from your terminal. In the command below, replace `path/to/your/config.ovpn` with the actual path to your downloaded file.</p>
+                        <div class="code-block">
+                            <code>sudo openvpn --config path/to/your/config.ovpn</code>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="text-slate-600 mt-4">Your terminal will show connection logs. As long as this process is running, your traffic is routed through the VPN. To disconnect, press `Ctrl+C` in the terminal window.</p>
+                    </div>
+                 </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        const navMac = document.getElementById('nav-mac');
+        const navVpn = document.getElementById('nav-vpn');
+        const macSection = document.getElementById('mac-section');
+        const vpnSection = document.getElementById('vpn-section');
+        const interfaceInput = document.getElementById('interface-input');
+        const serviceFileCode = document.getElementById('service-file-code');
+        const baseServiceFileText = serviceFileCode.innerText;
+
+        function showSection(sectionToShow, buttonToActivate) {
+            macSection.classList.add('hidden');
+            vpnSection.classList.add('hidden');
+            navMac.classList.remove('active');
+            navVpn.classList.remove('active');
+
+            sectionToShow.classList.remove('hidden');
+            buttonToActivate.classList.add('active');
+        }
+
+        navMac.addEventListener('click', () => showSection(macSection, navMac));
+        navVpn.addEventListener('click', () => showSection(vpnSection, navVpn));
+
+        interfaceInput.addEventListener('input', (e) => {
+            const interfaceName = e.target.value.trim();
+            if (interfaceName) {
+                serviceFileCode.innerText = baseServiceFileText.replace(/your_interface_name/g, interfaceName);
+            } else {
+                serviceFileCode.innerText = baseServiceFileText;
+            }
+        });
+
+        function copyCode(button) {
+            const codeElement = button.previousElementSibling;
+            const textToCopy = codeElement.innerText;
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const originalText = button.innerText;
+            button.innerText = 'Copied!';
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+
