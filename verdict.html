@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Choosing Your Web Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F5F5F5;
+            color: #383838;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flowchart-step {
+            border: 2px solid #F3B329;
+            background-color: #ffffff;
+        }
+        .flowchart-line {
+            width: 2px;
+            background-color: #F3B329;
+            margin: 0 auto;
+        }
+        .flowchart-arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #F3B329;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#00A6FB]">Choose Your Platform</h1>
+            <p class="text-lg md:text-xl mt-4 text-gray-600">A Visual Guide to Building Your Next Blog: WordPress vs. Custom Code</p>
+        </header>
+
+        <main class="space-y-12 md:space-y-20">
+
+            <section id="intro" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Start Your Journey: Which Path to Take?</h2>
+                <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+                    Launching a blog involves a critical first decision: the platform. Do you opt for a user-friendly Content Management System (CMS) that gets you running quickly, or do you build from the ground up with code for ultimate control? This guide visualizes the trade-offs.
+                </p>
+                <div class="flex flex-col items-center">
+                    <div class="flowchart-step text-center p-4 rounded-lg shadow-lg w-full md:w-1/2">
+                        <h3 class="font-bold text-lg">YOUR BLOG IDEA</h3>
+                        <p class="text-sm text-gray-600">Video, Images & App Building</p>
+                    </div>
+                    <div class="flowchart-line h-8"></div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="flowchart-line h-8"></div>
+                    <div class="w-full flex flex-col md:flex-row justify-center gap-8">
+                        <div class="flowchart-step text-center p-4 rounded-lg shadow-lg flex-1">
+                            <h3 class="font-bold text-lg">PATH 1: The Creator's Route</h3>
+                            <p class="text-sm font-semibold text-[#00A6FB]">WordPress + Elementor</p>
+                        </div>
+                        <div class="flowchart-step text-center p-4 rounded-lg shadow-lg flex-1">
+                             <h3 class="font-bold text-lg">PATH 2: The Developer's Way</h3>
+                             <p class="text-sm font-semibold text-[#F48424]">HTML + JavaScript</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="comparison" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Head-to-Head: A Feature Showdown</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="w-full">
+                        <h3 class="text-xl font-bold text-center mb-2">Ease of Use</h3>
+                        <p class="text-center text-gray-600 mb-4 text-sm">A 5-star rating system shows a clear winner in user-friendliness. WordPress is built for non-coders, making setup and posting a breeze.</p>
+                        <div class="chart-container">
+                            <canvas id="easeOfUseChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="w-full">
+                        <h3 class="text-xl font-bold text-center mb-2">Setup Speed</h3>
+                        <p class="text-center text-gray-600 mb-4 text-sm">How fast can you go from zero to a live blog? The difference is between hours and weeks.</p>
+                        <div class="flex justify-around items-center mt-6">
+                            <div class="text-center">
+                                <span class="text-6xl">🚀</span>
+                                <p class="font-bold text-lg mt-2">Fast</p>
+                                <p class="text-sm text-[#00A6FB] font-semibold">WordPress</p>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-6xl">🐢</span>
+                                <p class="font-bold text-lg mt-2">Slow</p>
+                                <p class="text-sm text-[#F48424] font-semibold">HTML/JS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="core-attributes" class="bg-white rounded-lg shadow-md p-6 md:p-8 md:col-span-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">Core Attributes Comparison</h2>
+                <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+                    Beyond initial setup, daily management, customization, and maintenance are key. This radar chart compares both platforms across crucial long-term attributes. WordPress excels in content-focused areas, while custom code offers more granular control.
+                </p>
+                <div class="chart-container h-[400px] max-h-[60vh] mx-auto">
+                    <canvas id="attributesRadarChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="personas">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Who is it For? Know Your Persona</h2>
+                 <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+                    The best choice depends entirely on your skills, goals, and how you want to spend your time. Are you a content creator focused on your message, or a developer who loves to build?
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="kpi-card border-t-4 border-[#00A6FB]">
+                         <span class="text-5xl mb-4 inline-block">✍️</span>
+                        <h3 class="text-2xl font-bold mb-2">The Content Creator</h3>
+                        <p class="text-gray-600 mb-4">Focus is on producing videos, images, and articles efficiently.</p>
+                        <ul class="text-left space-y-2 list-inside list-disc">
+                           <li>Wants to publish content easily</li>
+                           <li>Needs powerful SEO tools out-of-the-box</li>
+                           <li>Prefers visual design over coding</li>
+                        </ul>
+                         <p class="mt-4 font-bold text-lg text-[#00A6FB]">Platform of Choice: WordPress</p>
+                    </div>
+                    <div class="kpi-card border-t-4 border-[#F48424]">
+                        <span class="text-5xl mb-4 inline-block">💻</span>
+                        <h3 class="text-2xl font-bold mb-2">The Developer Purist</h3>
+                        <p class="text-gray-600 mb-4">Focus is on performance, security, and total control over the code.</p>
+                        <ul class="text-left space-y-2 list-inside list-disc">
+                            <li>Enjoys the process of building from scratch</li>
+                            <li>Demands the fastest possible performance</li>
+                            <li>Wants a unique, handcrafted design</li>
+                        </ul>
+                        <p class="mt-4 font-bold text-lg text-[#F48424]">Platform of Choice: HTML/JS</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tradeoffs" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                 <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">The Core Trade-Off</h2>
+                 <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+                    Ultimately, the decision balances two key axes: how easy the platform is to use versus how much control and performance it offers. This scatter plot visualizes where each platform sits in this landscape.
+                </p>
+                <div class="chart-container h-[400px] max-h-[60vh] mx-auto">
+                    <canvas id="tradeoffScatterChart"></canvas>
+                </div>
+            </section>
+
+            <section id="verdict" class="text-center my-8 md:my-16">
+                <div class="bg-gradient-to-r from-[#00A6FB] to-[#0072b3] text-white rounded-lg shadow-xl p-8 md:p-12 max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">The Verdict for a Content Blog</h2>
+                    <p class="text-lg md:text-xl mb-6">
+                        For a video and image-heavy blog where the primary goal is creating and managing content, the choice is clear.
+                    </p>
+                    <div class="bg-white text-[#383838] rounded p-4 font-bold text-xl md:text-2xl inline-block">
+                        Go with WordPress + Elementor
+                    </div>
+                     <p class="mt-6 text-base text-blue-100">It empowers you to focus on what truly matters: your content.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 pb-8">
+            <p class="text-sm text-gray-500">&copy; 2025 Data-Driven Decisions Inc. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            const FONT_COLOR = '#383838';
+            const GRID_COLOR = '#e2e8f0';
+            const WP_COLOR = '#00A6FB';
+            const JS_COLOR = '#F48424';
+            const YELLOW_ACCENT = '#F3B329';
+
+            const wrapLabel = (label) => {
+                const max_len = 16;
+                if (label.length <= max_len) {
+                    return label;
+                }
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).length > max_len && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = currentLine ? currentLine + ' ' + word : word;
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine);
+                }
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+            
+            Chart.defaults.font.family = "'Poppins', sans-serif";
+            Chart.defaults.color = FONT_COLOR;
+
+            const sharedOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: '#000',
+                        titleFont: { size: 16, weight: 'bold' },
+                        bodyFont: { size: 14 },
+                        padding: 10,
+                        cornerRadius: 5,
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            if (document.getElementById('easeOfUseChart')) {
+                new Chart(document.getElementById('easeOfUseChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['WordPress + Elementor', 'HTML + JavaScript'],
+                        datasets: [{
+                            label: 'Ease of Use (out of 5)',
+                            data: [5, 2],
+                            backgroundColor: [WP_COLOR, JS_COLOR],
+                            borderColor: [WP_COLOR, JS_COLOR],
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }]
+                    },
+                    options: {
+                        ...sharedOptions,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 5,
+                                grid: { color: GRID_COLOR },
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            },
+                             y: {
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            ...sharedOptions.plugins,
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('attributesRadarChart')) {
+                 new Chart(document.getElementById('attributesRadarChart'), {
+                    type: 'radar',
+                    data: {
+                        labels: ['Content Mgmt', 'Easy Features', 'Customization', 'Performance', 'Low Maintenance'],
+                        datasets: [{
+                            label: 'WordPress',
+                            data: [5, 5, 4, 3, 2],
+                            backgroundColor: 'rgba(0, 166, 251, 0.2)',
+                            borderColor: WP_COLOR,
+                            pointBackgroundColor: WP_COLOR,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: WP_COLOR
+                        }, {
+                            label: 'HTML/JS',
+                            data: [1, 1, 5, 5, 4],
+                            backgroundColor: 'rgba(244, 132, 36, 0.2)',
+                            borderColor: JS_COLOR,
+                            pointBackgroundColor: JS_COLOR,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: JS_COLOR
+                        }]
+                    },
+                    options: {
+                        ...sharedOptions,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 5,
+                                pointLabels: {
+                                    font: { size: 12 }
+                                },
+                                grid: { color: GRID_COLOR },
+                                angleLines: { color: GRID_COLOR },
+                                ticks: {
+                                    stepSize: 1,
+                                    backdropColor: 'transparent',
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('tradeoffScatterChart')) {
+                 new Chart(document.getElementById('tradeoffScatterChart'), {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'WordPress',
+                            data: [{x: 5, y: 3}],
+                            backgroundColor: WP_COLOR,
+                            pointRadius: 15,
+                            pointHoverRadius: 20,
+                        }, {
+                            label: 'HTML/JS',
+                            data: [{x: 2, y: 5}],
+                            backgroundColor: JS_COLOR,
+                            pointRadius: 15,
+                            pointHoverRadius: 20,
+                        }]
+                    },
+                    options: {
+                       ...sharedOptions,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Ease of Use →',
+                                    font: { size: 14, weight: 'bold' }
+                                },
+                                beginAtZero: true,
+                                max: 6,
+                                grid: { color: GRID_COLOR },
+                                ticks: { stepSize: 1 }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Control & Performance →',
+                                    font: { size: 14, weight: 'bold' }
+                                },
+                                beginAtZero: true,
+                                max: 6,
+                                grid: { color: GRID_COLOR },
+                                ticks: { stepSize: 1 }
+                            }
+                        }
+                    }
+                });
+            }
+
+        })();
+    </script>
+</body>
+</html>
+
