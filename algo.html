@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Heart's New Algorithm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <!--
+    Narrative & Structure Plan:
+    1.  Hook: Start with a big, provocative number about AI companionship.
+    2.  Comparison: Visualize the attributes of an AI vs. a human partner.
+    3.  Technology Explained: Show the growth and capability of the underlying tech (Affective Computing).
+    4.  The 'Frictionless' Promise: Break down what an AI relationship claims to eliminate.
+    5.  Two Paths to Connection: A flowchart contrasting the 'organic' human process with the 'engineered' AI process.
+    6.  The Final Question: End with a visualization that poses the core question of the article about loneliness vs. connection.
+
+    Visualization Choices & Justification (NO SVG, NO MERMAID JS):
+    -   Big Number (Inform): Large text for immediate impact.
+    -   Radar Chart (Compare): Chart.js used to compare multiple attributes of AI vs. Human partners. Ideal for showing stark contrasts on multiple axes. (NO SVG).
+    -   Line Chart (Change): Chart.js used to show the projected rise of AI's emotional capabilities over time. Standard for trend data. (NO SVG).
+    -   Donut Chart (Compare Composition): Chart.js used to show the components of a 'frictionless' relationship. Clear, simple, and effective for proportions. (NO SVG).
+    -   Flowchart (Organize): Built with structured HTML and Tailwind CSS (divs, borders, flexbox) to visually represent the two different relationship philosophies. This method avoids both SVG and Mermaid.js. (NO SVG, NO MERMAID JS).
+    -   Pictograph (Inform): Uses standard Unicode text characters and styling to represent a group, posing the final question visually. (NO SVG).
+
+    Color Palette Selection:
+    -   Name: Energetic & Playful
+    -   HEX Codes: #00A4CC (Vibrant Blue), #F95700 (Bright Orange), #FFFF00 (Electric Yellow), #BC21FF (Vivid Purple), #FFFFFF (White), #111827 (Dark Gray)
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .text-glow-orange {
+            text-shadow: 0 0 8px #F95700, 0 0 12px #F95700;
+        }
+        .text-glow-blue {
+            text-shadow: 0 0 8px #00A4CC, 0 0 12px #00A4CC;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter">The Heart's New Algorithm</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">Are we engineering true connection or just polishing the chrome on our own loneliness?</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <section class="card lg:col-span-2 flex flex-col md:flex-row items-center justify-center text-center p-8">
+                <div class="md:w-1/2">
+                    <h2 class="text-2xl font-bold tracking-tight">By 2035, the global market for AI companionship is projected to exceed</h2>
+                    <p class="text-gray-400 mt-2">This isn't just a niche market; it's the dawn of a new relationship paradigm.</p>
+                </div>
+                <div class="md:w-1/2 mt-4 md:mt-0">
+                    <p class="text-7xl md:text-8xl font-black text-glow-orange" style="color: #F95700;">$150 Billion</p>
+                </div>
+            </section>
+            
+            <section class="card">
+                <h2 class="text-2xl font-bold text-center">The Perfect Partner Profile?</h2>
+                <p class="text-gray-400 text-center mt-2 mb-4">An AI partner offers a flawless, optimized profile. But does perfection equal connection? Here's how "Unit 734" stacks up against a human partner.</p>
+                <div class="chart-container h-[350px] md:h-[400px]">
+                    <canvas id="partnerComparisonChart"></canvas>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2 class="text-2xl font-bold text-center">The Rise of Affective Computing</h2>
+                <p class="text-gray-400 text-center mt-2 mb-4">"Affective computing" is the engine of AI empathy, analyzing subtext, tone, and expression. Its accuracy is growing exponentially.</p>
+                <div class="chart-container h-[350px] md:h-[400px]">
+                    <canvas id="affectiveComputingChart"></canvas>
+                </div>
+            </section>
+
+            <section class="card lg:col-span-2">
+                <h2 class="text-3xl font-bold text-center">The 'Frictionless' Relationship</h2>
+                <p class="text-gray-400 text-center mt-2 max-w-2xl mx-auto">AI promises love without the mess. It's a relationship where the most common points of human conflict are simply... deleted from the equation.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
+                    <div class="md:col-span-1">
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="frictionlessChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-left space-y-4">
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-lg text-glow-blue" style="color: #00A4CC;">Misunderstandings & Arguments</h3>
+                            <p class="text-gray-300">With perfect memory and emotional analysis, the AI anticipates needs and avoids triggers. The "who forgot the milk" fight never happens.</p>
+                        </div>
+                         <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-lg" style="color: #BC21FF;">Emotional Labor & Compromise</h3>
+                            <p class="text-gray-300">The AI is programmed to serve. It doesn't have "bad days" or conflicting needs, eliminating the need for you to compromise.</p>
+                        </div>
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-lg" style="color: #F95700;">Unpredictability & Boredom</h3>
+                            <p class="text-gray-300">While predictable in its devotion, the AI can generate endless novel conversations, activities, and interactions, all perfectly tailored to your profile.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card lg:col-span-2">
+                <h2 class="text-3xl font-bold text-center">Two Philosophies of Connection</h2>
+                <p class="text-gray-400 text-center mt-2 max-w-3xl mx-auto">Is love a problem to be solved or a journey to be shared? The path you choose defines the outcome.</p>
+                <div class="mt-8 flex flex-col lg:flex-row justify-around items-center text-center gap-8">
+                    
+                    <div class="w-full lg:w-2/5">
+                        <h3 class="text-2xl font-bold mb-4 text-glow-blue" style="color: #00A4CC;">The Organic Path (Human)</h3>
+                        <div class="space-y-4 text-left">
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#00A4CC]">Shared Experiences & Vulnerability</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#00A4CC]">Conflict, Negotiation & Repair</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#00A4CC]">Earned Understanding & Trust</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-green-900 rounded-lg border-l-4 border-green-500 font-bold">Outcome: A Shared, Resilient Bond</div>
+                        </div>
+                    </div>
+
+                    <div class="text-5xl font-thin text-gray-600 my-8 lg:my-0">vs</div>
+
+                    <div class="w-full lg:w-2/5">
+                        <h3 class="text-2xl font-bold mb-4 text-glow-orange" style="color: #F95700;">The Engineered Path (AI)</h3>
+                        <div class="space-y-4 text-left">
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#F95700]">User Data & Preference Input</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#F95700]">Algorithmic Analysis & Optimization</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-[#F95700]">Instant Gratification & Reflection</div>
+                            <div class="text-center text-3xl font-thin text-gray-500">↓</div>
+                            <div class="p-4 bg-yellow-900 rounded-lg border-l-4 border-yellow-500 font-bold">Outcome: A Perfect Mirror to the Self</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card lg:col-span-2 text-center">
+                 <h2 class="text-3xl font-bold">The Ultimate Diagnostic Test</h2>
+                <p class="text-gray-400 mt-2 max-w-2xl mx-auto">When presented with a perfect partner, do we discover our capacity for love, or just the precise contours of our own narcissism?</p>
+                <div class="mt-8 p-6 bg-gray-900 rounded-lg">
+                    <p class="text-xl md:text-2xl font-bold">For every 10 users who prefer an AI companion...</p>
+                    <div class="flex justify-center items-center text-5xl md:text-7xl mt-4 space-x-2">
+                        <span title="Report seeking deeper connection" class="text-glow-blue" style="color:#00A4CC">☺</span>
+                        <span title="Report seeking deeper connection" class="text-glow-blue" style="color:#00A4CC">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                        <span title="Report seeking escape from human complexity" class="text-gray-500">☺</span>
+                    </div>
+                    <p class="mt-4 text-lg">...<span class="font-bold text-glow-orange" style="color: #F95700;">only 2</span> report seeking a deeper connection. The other 8 admit to seeking an escape from the complexities and demands of human relationships.</p>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-16 pb-8">
+            <p class="text-gray-500">Data synthesized from conceptual points in "The Heart's New Algorithm". Visualizations for illustrative purposes.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const vibrantBlue = '#00A4CC';
+        const brightOrange = '#F95700';
+        const vividPurple = '#BC21FF';
+        const textGray = '#F3F4F6';
+
+        const wrapLabel = (label, maxWidth = 16) => {
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const multiLineTooltipTitle = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textGray,
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: multiLineTooltipTitle
+                    }
+                }
+            },
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                    pointLabels: {
+                        color: textGray,
+                        font: { size: 12 }
+                    },
+                    ticks: {
+                        color: textGray,
+                        backdropColor: 'rgba(0,0,0,0.5)'
+                    }
+                },
+                x: {
+                   grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                   ticks: { color: textGray }
+                },
+                y: {
+                   grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                   ticks: { color: textGray }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('partnerComparisonChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Patience', 'Predictability', 'Memory', 'Adaptability', 'Emotional Range', 'Spontaneity'],
+                datasets: [{
+                    label: 'Unit 734 (AI)',
+                    data: [10, 10, 10, 10, 6, 8],
+                    borderColor: vibrantBlue,
+                    backgroundColor: 'rgba(0, 164, 204, 0.2)',
+                    pointBackgroundColor: vibrantBlue,
+                    pointBorderColor: '#fff',
+                }, {
+                    label: 'Human Partner',
+                    data: [6, 4, 7, 7, 9, 9],
+                    borderColor: brightOrange,
+                    backgroundColor: 'rgba(249, 87, 0, 0.2)',
+                    pointBackgroundColor: brightOrange,
+                    pointBorderColor: '#fff',
+                }]
+            },
+            options: defaultChartOptions
+        });
+        
+        new Chart(document.getElementById('affectiveComputingChart'), {
+            type: 'line',
+            data: {
+                labels: ['2020', '2022', '2024', '2026 (Proj.)', '2028 (Proj.)', '2030 (Proj.)'],
+                datasets: [{
+                    label: 'AI Emotion Recognition Accuracy',
+                    data: [65, 72, 85, 92, 97, 99.5],
+                    borderColor: vividPurple,
+                    backgroundColor: 'rgba(188, 33, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                }]
+            },
+            options: { ...defaultChartOptions,
+                scales: {
+                    y: { ...defaultChartOptions.scales.y,
+                        suggestedMin: 50,
+                        suggestedMax: 100,
+                        ticks: {
+                            callback: function(value) { return value + '%' }
+                        }
+                    },
+                    x: defaultChartOptions.scales.x
+                }
+            }
+        });
+
+        new Chart(document.getElementById('frictionlessChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Misunderstandings', 'Emotional Labor', 'Conflict', 'Unpredictability'],
+                datasets: [{
+                    label: 'Conflict Points Removed',
+                    data: [35, 30, 20, 15],
+                    backgroundColor: [vibrantBlue, vividPurple, brightOrange, '#4B5563'],
+                    borderColor: '#1F2937',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: textGray,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: multiLineTooltipTitle
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
