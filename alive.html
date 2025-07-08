@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Quest for Lifelike Robots</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .text-accent { color: #FFF275; }
+        .bg-primary { background-color: #004AAD; }
+        .bg-dark { background-color: #0A2463; }
+        .text-primary { color: #004AAD; }
+        .text-secondary { color: #3E92CC; }
+        .border-accent { border-color: #FFF275; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: -2.375rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: #3E92CC;
+            border: 3px solid #0A2463;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- PALETTE NAME: Brilliant Blues -->
+    <!-- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used in this output. -->
+
+    <header class="bg-dark text-white text-center py-16 px-4">
+        <h1 class="text-4xl md:text-6xl font-black mb-4">The Uncanny Tango</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">Can we ever build a robot that feels real, or are we just getting better at tricking ourselves?</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="history" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-primary">A Dream as Old as Time</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">The desire to breathe life into the inanimate is not new. From ancient myths to modern marvels, our quest to create a mechanical mirror image has been a multi-century journey.</p>
+            <div class="relative max-w-2xl mx-auto">
+                <div class="border-l-4 border-dark absolute h-full top-0 left-[-1.75rem] md:left-1/2 md:-translate-x-1/2"></div>
+                <div class="space-y-12">
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="md:grid md:grid-cols-2 md:gap-8 timeline-item">
+                            <div class="md:text-right">
+                                <p class="font-bold text-xl text-secondary">4th Century BCE</p>
+                                <p class="text-gray-700">Myths of Hephaestus describe golden handmaidens, early concepts of automata.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="md:grid md:grid-cols-2 md:gap-8 timeline-item">
+                            <div class="md:col-start-2">
+                                <p class="font-bold text-xl text-secondary">18th Century</p>
+                                <p class="text-gray-700">Elaborate clockwork automata mesmerize Europe, showcasing mechanical possibility.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="md:grid md:grid-cols-2 md:gap-8 timeline-item">
+                            <div class="md:text-right">
+                                <p class="font-bold text-xl text-secondary">2016</p>
+                                <p class="text-gray-700">'Sophia' is activated, becoming the world's first robot citizen and a symbol of social robotics.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="md:grid md:grid-cols-2 md:gap-8 timeline-item">
+                            <div class="md:col-start-2">
+                                <p class="font-bold text-xl text-secondary">Today</p>
+                                <p class="text-gray-700">Companies like Tesla and Engineered Arts push the boundaries of humanoid form and function.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="marvels" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">Today's Mechanical Marvels</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-secondary">
+                    <p class="text-6xl mb-4">😀</p>
+                    <h3 class="text-xl font-bold mb-2">Ameca</h3>
+                    <p class="text-gray-600">Engineered Arts' creation, known for its hyper-realistic and fluid facial expressions, challenging our perception of machine emotion.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-secondary">
+                     <p class="text-6xl mb-4">🚶</p>
+                    <h3 class="text-xl font-bold mb-2">Tesla Optimus</h3>
+                    <p class="text-gray-600">Designed as a general-purpose bipedal robot, poised to revolutionize labor by performing tasks deemed unsafe or tedious for humans.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-secondary">
+                     <p class="text-6xl mb-4">💬</p>
+                    <h3 class="text-xl font-bold mb-2">Sophia</h3>
+                    <p class="text-gray-600">A "social robot" that uses AI to engage in conversations, serving as a platform for both AI research and human-robot interaction studies.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="mb-16 bg-gray-100 py-12 px-4 rounded-lg">
+             <h2 class="text-3xl font-bold text-center mb-2 text-primary">Deconstructing the Illusion</h2>
+             <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Creating a lifelike robot is a delicate high-wire act of technology, blending advanced hardware with sophisticated software to mimic biology.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-primary mb-4">The Anatomy of a Modern Android</h3>
+                    <p class="text-gray-700 mb-4">Progress is not just in the "brain." Engineers are reverse-engineering the human body with incredible new materials:</p>
+                    <ul class="list-none space-y-2">
+                        <li class="flex items-start"><span class="text-secondary font-bold mr-2 text-xl">⚙️</span> <strong>"Muscle Wires":</strong> Shape-memory alloys that contract with electric currents, allowing for smoother, more natural movements than traditional motors.</li>
+                        <li class="flex items-start"><span class="text-secondary font-bold mr-2 text-xl">🖐️</span> <strong>Synthetic Skin:</strong> Self-healing materials embedded with sensors to detect pressure and temperature, bringing a sense of touch to the machine.</li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <canvas id="techFocusChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="uncanny-valley" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-primary">The Uncanny Valley</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">As robots become more human-like, we don't always feel more comfortable. There is a point where "almost human" becomes deeply unsettling—a psychological barrier as challenging as any engineering problem.</p>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                 <div class="chart-container">
+                    <canvas id="uncannyValleyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="bg-dark text-white py-16 px-4 rounded-lg">
+             <h2 class="text-3xl font-bold text-center mb-2 text-accent">The Ghost in the Machine</h2>
+             <p class="text-center text-gray-300 mb-12 max-w-2xl mx-auto">Is a robot expressing sadness actually feeling it, or just running a complex script? The answer lies in the future of Artificial Intelligence.</p>
+             <div class="max-w-md mx-auto">
+                <div class="relative text-center">
+                    <div class="relative z-10 p-4 bg-primary rounded-t-lg">
+                        <h3 class="font-black text-2xl">ASI</h3>
+                        <p class="text-sm">Artificial Superintelligence</p>
+                    </div>
+                    <div class="w-full h-4 bg-primary"></div>
+                     <div class="relative z-10 p-4 bg-secondary w-10/12 mx-auto">
+                        <h3 class="font-bold text-xl">AGI</h3>
+                        <p class="text-sm">Artificial General Intelligence</p>
+                    </div>
+                     <div class="w-10/12 h-4 bg-secondary mx-auto"></div>
+                     <div class="relative z-10 p-4 bg-blue-300 text-dark w-8/12 mx-auto rounded-b-lg">
+                        <h3 class="font-bold text-lg">Narrow AI</h3>
+                        <p class="text-xs">Task-Specific (Today's AI)</p>
+                    </div>
+                </div>
+                <p class="text-center mt-8 text-gray-400">The jump from today's Narrow AI to a truly conscious Artificial General or Superintelligence is the final frontier for creating a genuinely "living" machine.</p>
+             </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-12 px-4 bg-gray-200">
+         <h2 class="text-2xl font-bold text-primary mb-4">What Does it Mean to be Human?</h2>
+         <p class="text-gray-600 max-w-3xl mx-auto mb-4">This journey is more than a technological quest; it's a philosophical one. Creating lifelike robots forces us to hold a mirror to ourselves and ask what truly defines our own humanity.</p>
+         <p class="font-bold text-gray-700">"Just try not to fall in love with your toaster in the meantime."</p>
+    </footer>
+
+    <script>
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#374151', 
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#4B5563' },
+                    grid: { color: '#E5E7EB' }
+                },
+                x: {
+                    ticks: { color: '#4B5563' },
+                    grid: { display: false }
+                }
+            }
+        };
+        
+        const techFocusCtx = document.getElementById('techFocusChart').getContext('2d');
+        new Chart(techFocusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Hardware (Mimicry)', 'Software (Intelligence)', 'Power & Efficiency', 'Sensing & Perception'],
+                datasets: [{
+                    label: 'R&D Focus',
+                    data: [40, 35, 15, 10],
+                    backgroundColor: [
+                        '#004AAD',
+                        '#3E92CC',
+                        '#0A2463',
+                        '#FFF275',
+                    ],
+                    borderColor: '#F0F4F8',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                         labels: {
+                            color: '#374151',
+                            font: { family: "'Inter', sans-serif" }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribution of R&D in Lifelike Robotics',
+                        color: '#0A2463',
+                        font: { size: 16, family: "'Inter', sans-serif" }
+                    }
+                }
+            }
+        });
+
+        const uncannyValleyCtx = document.getElementById('uncannyValleyChart').getContext('2d');
+        const uncannyLabels = [
+            'Industrial Robot', 'Toy Robot', 'Humanoid Robot', 'Prosthetic Hand', 'Almost-Human Android', 'Healthy Person'
+        ].map(label => wrapLabels(label, 16));
+        
+        new Chart(uncannyValleyCtx, {
+            type: 'line',
+            data: {
+                labels: uncannyLabels,
+                datasets: [{
+                    label: 'Human Affinity',
+                    data: [20, 40, 80, 60, -20, 100],
+                    fill: true,
+                    backgroundColor: 'rgba(62, 146, 204, 0.2)',
+                    borderColor: '#3E92CC',
+                    tension: 0.3,
+                    pointBackgroundColor: '#004AAD',
+                    pointRadius: 5
+                }]
+            },
+            options: { ...defaultChartOptions,
+                scales: {
+                     y: {
+                        ticks: { color: '#4B5563' },
+                        grid: { color: '#E5E7EB' },
+                        title: {
+                            display: true,
+                            text: 'Emotional Response',
+                            color: '#0A2463'
+                        }
+                    },
+                    x: {
+                        ticks: { color: '#4B5563', maxRotation: 0, minRotation: 0 },
+                        grid: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Degree of Human Likeness',
+                            color: '#0A2463'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
