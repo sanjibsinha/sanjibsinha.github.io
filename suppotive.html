@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Algorithmic Heart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .text-shadow-custom {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- 
+    Narrative Plan: 
+    1. Hook: Introduce the concept with a powerful title and an initial chart on desired partner traits.
+    2. Explanation: Detail the RLHF process using a CSS-based flowchart.
+    3. Comparison: Use a radar chart to visually contrast the AI partner with a human partner's profile.
+    4. The Paradox: Visualize the core conflict with a scatter plot showing diminishing returns of perfection on fulfillment.
+    5. Societal Impact: Use a line chart and stacked bar chart to illustrate potential shifts in social tolerance and interaction.
+    6. Conclusion: End with the central ethical question from the source text.
+
+    Visualization Choices (NO SVG, NO MERMAID JS):
+    - Donut Chart (Partner Traits): Goal: Inform/Compare. Method: Chart.js. Best for showing simple composition of preferences.
+    - Flowchart (RLHF Process): Goal: Organize. Method: HTML/Tailwind CSS. Clear way to show a process without SVG.
+    - Radar Chart (AI vs Human): Goal: Compare. Method: Chart.js. Excellent for comparing multiple quantitative attributes across two subjects.
+    - Scatter Plot (Perfection Paradox): Goal: Relationships. Method: Chart.js. Ideal for showing the correlation between two variables (flawlessness vs. fulfillment).
+    - Line Chart (Tolerance Decline): Goal: Change. Method: Chart.js. Standard for showing a trend over time.
+    - Stacked Bar Chart (Social Shift): Goal: Compare/Change. Method: Chart.js. Shows change in composition over time.
+
+    Color Palette: Brilliant Blues (#004AAD, #0062D5, #418FF1, #81B9F9, #B9D7FB) + Neutrals.
+    -->
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#004AAD] text-shadow-custom">The Algorithmic Heart</h1>
+            <p class="text-lg md:text-xl text-[#0062D5] mt-4 max-w-3xl mx-auto">Can a robot partner, trained to be perfect through Reinforcement Learning, ever be too good for our own good?</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <div class="md:col-span-1 bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center">
+                <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">The Quest for the "Perfect" Partner</h2>
+                <p class="text-gray-600 text-center mb-6">Humans often seek ideal traits in a partner. An AI companion could theoretically be programmed to maximize all of them, all the time. But what do we prioritize? This chart shows a hypothetical breakdown of desired qualities.</p>
+                <div class="chart-container h-[300px] md:h-[350px]">
+                    <canvas id="partnerTraitsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="md:col-span-1 bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center">
+                <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">The Training Engine: RLHF</h2>
+                <p class="text-gray-600 text-center mb-6">Reinforcement Learning with Human Feedback (RLHF) is the core mechanism. It's a continuous cycle of action and reaction, much like training a puppy, but with data points instead of treats.</p>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="bg-[#B9D7FB] text-[#004AAD] font-bold rounded-full h-12 w-12 flex items-center justify-center text-xl">1</div>
+                        <div class="ml-4 p-3 bg-gray-50 rounded-lg flex-1">
+                            <h3 class="font-semibold text-gray-800">Partner's Action</h3>
+                            <p class="text-sm text-gray-600">The robot ("Alex") performs an action, like suggesting a movie.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center h-8">
+                        <div class="w-px bg-[#418FF1] border-dashed"></div>
+                        <span class="text-2xl text-[#418FF1] -translate-y-2">↓</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="bg-[#81B9F9] text-[#004AAD] font-bold rounded-full h-12 w-12 flex items-center justify-center text-xl">2</div>
+                        <div class="ml-4 p-3 bg-gray-50 rounded-lg flex-1">
+                            <h3 class="font-semibold text-gray-800">Human Feedback</h3>
+                            <p class="text-sm text-gray-600">You react, either positively (watching it) or negatively (declining).</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center h-8">
+                        <div class="w-px bg-[#418FF1] border-dashed"></div>
+                        <span class="text-2xl text-[#418FF1] -translate-y-2">↓</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="bg-[#418FF1] text-white font-bold rounded-full h-12 w-12 flex items-center justify-center text-xl">3</div>
+                        <div class="ml-4 p-3 bg-gray-50 rounded-lg flex-1">
+                            <h3 class="font-semibold text-gray-800">Algorithm Reinforcement</h3>
+                            <p class="text-sm text-gray-600">Your feedback acts as a data point, reinforcing or discouraging that behavior.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">Profile Comparison: Algorithmic vs. Human</h2>
+                <p class="text-gray-600 text-center mb-6 max-w-3xl mx-auto">An RLHF partner could be optimized for traits we value, while a human partner remains a complex mix of strengths and endearing imperfections. This chart compares hypothetical profiles.</p>
+                <div class="chart-container">
+                    <canvas id="comparisonRadarChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-1 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">The Imperfection Paradox</h2>
+                <p class="text-gray-600 text-center mb-6">Human connection is often forged in shared vulnerability. What happens when a partner is flawless? This scatter plot suggests that extreme partner perfection might lead to diminishing returns in long-term relationship fulfillment.</p>
+                <div class="chart-container">
+                    <canvas id="paradoxScatterChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-1 bg-white rounded-lg shadow-lg p-6">
+                 <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">The Social Echo Chamber</h2>
+                <p class="text-gray-600 text-center mb-6">If we become accustomed to a perfectly validating partner, our tolerance for normal human error in our wider social circles could decrease over time.</p>
+                <div class="chart-container">
+                    <canvas id="toleranceLineChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-4">A Shift in Social Interaction</h2>
+                <p class="text-gray-600 text-center mb-6 max-w-3xl mx-auto">Over time, the ease and predictability of an AI companion could lead individuals to reallocate their social time away from more complex, and sometimes challenging, human relationships.</p>
+                 <div class="chart-container h-[400px] md:h-[450px]">
+                    <canvas id="socialShiftChart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center my-12 md:my-16">
+             <div class="bg-[#004AAD] rounded-lg shadow-xl p-8 max-w-3xl mx-auto">
+                <p class="text-2xl md:text-3xl font-bold text-white mb-2">The question isn't whether we can build a perfect robot partner.</p>
+                <p class="text-3xl md:text-4xl font-black text-[#B9D7FB]">The real question is, should we?</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            darkest: '#004AAD',
+            dark: '#0062D5',
+            medium: '#418FF1',
+            light: '#81B9F9',
+            lightest: '#B9D7FB'
+        };
+
+        const wrapLabel = (label, maxLength) => {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#374151',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const traitsCtx = document.getElementById('partnerTraitsChart').getContext('2d');
+        new Chart(traitsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Supportiveness', 'Perfect Memory', 'Patience', 'Reliability', 'Shared Humor'],
+                datasets: [{
+                    label: 'Desired Partner Traits',
+                    data: [30, 25, 20, 15, 10],
+                    backgroundColor: [
+                        brilliantBlues.dark,
+                        brilliantBlues.medium,
+                        brilliantBlues.light,
+                        brilliantBlues.lightest,
+                        '#D1D5DB' 
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                         labels: {
+                            color: '#374151',
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const radarCtx = document.getElementById('comparisonRadarChart').getContext('2d');
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Memory', 'Patience', 'Supportiveness', 'Predictability', 'Spontaneity', 'Vulnerability'],
+                datasets: [{
+                    label: 'AI Partner',
+                    data: [10, 10, 10, 10, 2, 1],
+                    backgroundColor: 'rgba(65, 143, 241, 0.2)',
+                    borderColor: brilliantBlues.medium,
+                    pointBackgroundColor: brilliantBlues.medium,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: brilliantBlues.medium,
+                    borderWidth: 2
+                }, {
+                    label: 'Average Human Partner',
+                    data: [7, 6, 8, 5, 7, 8],
+                    backgroundColor: 'rgba(209, 213, 219, 0.2)',
+                    borderColor: '#9CA3AF',
+                    pointBackgroundColor: '#9CA3AF',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#9CA3AF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    r: {
+                        angleLines: { color: '#E5E7EB' },
+                        grid: { color: '#E5E7EB' },
+                        pointLabels: {
+                            font: { size: 12, family: "'Inter', sans-serif" },
+                            color: '#374151'
+                        },
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            color: '#6B7280',
+                             stepSize: 2
+                        },
+                        min: 0,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+        const scatterCtx = document.getElementById('paradoxScatterChart').getContext('2d');
+        new Chart(scatterCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Hypothetical Relationship Fulfillment',
+                    data: [
+                        {x: 1, y: 3}, {x: 2, y: 5}, {x: 3, y: 6}, {x: 4, y: 7.5}, {x: 5, y: 8.5}, 
+                        {x: 6, y: 9}, {x: 7, y: 9.2}, {x: 8, y: 8}, {x: 9, y: 7}, {x: 10, y: 6}
+                    ],
+                    backgroundColor: brilliantBlues.medium,
+                    borderColor: brilliantBlues.dark,
+                    borderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'Partner Flawlessness →', color: '#374151', font: { weight: 'bold' } },
+                        grid: { color: '#F3F4F6' }
+                    },
+                    y: {
+                        title: { display: true, text: '↑ Long-Term Fulfillment', color: '#374151', font: { weight: 'bold' } },
+                        grid: { color: '#F3F4F6' }
+                    }
+                }
+            }
+        });
+        
+        const toleranceCtx = document.getElementById('toleranceLineChart').getContext('2d');
+        new Chart(toleranceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                datasets: [{
+                    label: 'Tolerance for Human Imperfection',
+                    data: [100, 95, 85, 70, 60, 55],
+                    fill: true,
+                    borderColor: brilliantBlues.dark,
+                    backgroundColor: 'rgba(0, 98, 213, 0.1)',
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: brilliantBlues.dark,
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 110,
+                        ticks: {
+                            callback: function(value) { return value + '%' }
+                        },
+                         grid: { color: '#F3F4F6' }
+                    },
+                    x: {
+                         grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const socialShiftCtx = document.getElementById('socialShiftChart').getContext('2d');
+        const originalLabels = [
+            'Initial State (Before AI Partner)', 
+            'After 1 Year with AI Partner', 
+            'After 5 Years with AI Partner'
+        ];
+        const wrappedLabels = originalLabels.map(label => wrapLabel(label, 16));
+
+        new Chart(socialShiftCtx, {
+            type: 'bar',
+            data: {
+                labels: wrappedLabels,
+                datasets: [
+                    {
+                        label: 'Time with Human Friends/Family',
+                        data: [80, 65, 50],
+                        backgroundColor: brilliantBlues.medium,
+                    },
+                    {
+                        label: 'Time with AI Companion',
+                        data: [0, 15, 30],
+                        backgroundColor: brilliantBlues.dark,
+                    },
+                    {
+                        label: 'Time Alone / Other',
+                        data: [20, 20, 20],
+                        backgroundColor: '#D1D5DB',
+                    }
+                ]
+            },
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: { display: true, text: '% of Social Interaction Time', color: '#374151' },
+                        grid: { color: '#F3F4F6' }
+                    },
+                    y: {
+                        stacked: true,
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    tooltip: {
+                         callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
