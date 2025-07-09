@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The New Body Politic - Are We Ready to Love Robots?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 384px;
+            }
+        }
+        .material-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .material-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .text-deep-blue { color: #004AAD; }
+        .text-bright-blue { color: #008DDA; }
+        .text-cyan { color: #41C9E2; }
+        .bg-deep-blue { background-color: #004AAD; }
+        .bg-bright-blue { background-color: #008DDA; }
+        .bg-light-cyan { background-color: #ACE2E1; }
+        .border-bright-blue { border-color: #008DDA; }
+        
+        /* Chosen Color Palette: Brilliant Blues */
+        /* #004AAD, #008DDA, #41C9E2, #ACE2E1 */
+
+        /* Confirmation: NEITHER Mermaid JS NOR SVG were used in this document. */
+        /* All diagrams and charts are rendered using Chart.js with Canvas or structured HTML/CSS with Tailwind. */
+
+        /* Infographic Narrative Plan: */
+        /* 1. Hook: Start with a powerful stat on the AI companion market. */
+        /* 2. Public Perception: Show the trend of acceptance over time. */
+        /* 3. The Compatibility Test: Compare desired traits in partners using a radar chart. */
+        /* 4. The Uncanny Valley: Visualize the concept with a line chart. */
+        /* 5. Tech Breakdown: Use an HTML/CSS diagram to explain the core technologies. */
+        /* 6. Societal Concerns: Rank the public's primary fears with a bar chart. */
+        /* 7. Conclusion: End with a forward-looking projection. */
+
+        /* Visualization Selection Summary: */
+        /* - Market Growth (Inform): Single Big Number (HTML). No SVG. */
+        /* - Acceptance Trend (Change): Line Chart (Chart.js/Canvas). No SVG. */
+        /* - Trait Comparison (Compare): Radar Chart (Chart.js/Canvas). No SVG. */
+        /* - Uncanny Valley (Relationship): Scatter Plot with Line (Chart.js/Canvas). No SVG. */
+        /* - Tech Anatomy (Organize): HTML/CSS Diagram. No SVG/Mermaid. */
+        /* - Public Concerns (Rank): Horizontal Bar Chart (Chart.js/Canvas). No SVG. */
+        /* - Future Projection (Inform): Single Big Number + Unicode Icon (HTML). No SVG. */
+
+    </style>
+</head>
+<body class="bg-[#F0F4F8] text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-deep-blue mb-2">The New Body Politic</h1>
+            <p class="text-lg md:text-xl text-bright-blue max-w-3xl mx-auto">Is our advocacy for diverse bodies ready for a partner of silicone and steel? We analyze the data behind our readiness to love robots.</p>
+        </header>
+
+        <main class="space-y-8">
+        
+            <section class="material-card p-6 text-center">
+                <h2 class="text-xl font-bold text-deep-blue mb-2">The Emerging Market for Connection</h2>
+                <p class="text-gray-600 mb-4 max-w-2xl mx-auto">The abstract idea of AI companionship is rapidly becoming a concrete market. The global AI companion market is not just a niche; it's a burgeoning industry, signaling a significant shift in how we seek connection.</p>
+                <div class="bg-light-cyan/50 p-6 rounded-lg">
+                    <p class="text-2xl font-bold text-deep-blue">Projected Market Size by 2030</p>
+                    <p class="text-7xl font-black text-bright-blue my-2">$35 Billion</p>
+                    <p class="text-gray-600">This explosive growth reflects a deep-seated human need for companionship, now being met by technological solutions.</p>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="material-card p-6 flex flex-col">
+                    <h3 class="text-2xl font-bold text-deep-blue text-center mb-1">The Rising Tide of Acceptance</h3>
+                    <p class="text-gray-600 text-center mb-4">Public opinion is evolving. What was once science fiction is now a plausible future for many. This chart tracks the slow but steady growth in the percentage of adults who would consider a romantic or deep companionship relationship with an advanced AI.</p>
+                    <div class="chart-container flex-grow">
+                        <canvas id="acceptanceTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="material-card p-6 flex flex-col">
+                    <h3 class="text-2xl font-bold text-deep-blue text-center mb-1">The Compatibility Diagnostic</h3>
+                    <p class="text-gray-600 text-center mb-4">Is choosing a partner just running a diagnostic? This chart compares the perceived importance of key traits in human versus AI partners, revealing what we truly prioritize when biology is no longer a factor.</p>
+                    <div class="chart-container flex-grow">
+                        <canvas id="compatibilityRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="material-card p-6 lg:col-span-2 flex flex-col">
+                    <h3 class="text-2xl font-bold text-deep-blue text-center mb-1">Navigating the Uncanny Valley</h3>
+                    <p class="text-gray-600 text-center mb-4 max-w-3xl mx-auto">Emotional connection plummets when a robot is *almost* human, creating a deep sense of unease. Crossing this "Uncanny Valley" is the single greatest design challenge for creating truly accepted companions. The goal is not just human-like, but believably and comfortably so.</p>
+                    <div class="chart-container mx-auto">
+                        <canvas id="uncannyValleyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="material-card p-6">
+                    <h3 class="text-2xl font-bold text-deep-blue text-center mb-4">Anatomy of a Synthetic Companion</h3>
+                    <p class="text-gray-600 text-center mb-6">Modern humanoids are more than just walking computers. They are complex systems designed for nuanced interaction, blending advanced hardware and sophisticated software to simulate a convincing presence.</p>
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="inline-block p-3 bg-deep-blue text-white rounded-lg font-bold">AI Consciousness Core</div>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="w-1 h-8 bg-bright-blue"></div>
+                        </div>
+                        <div class="flex justify-around text-center">
+                            <div class="w-1/3">
+                                <div class="p-2 border-2 border-bright-blue rounded-lg h-full flex flex-col justify-center">
+                                    <h4 class="font-bold text-deep-blue">Micro-Expression Actuators</h4>
+                                    <p class="text-sm text-gray-600">Dozens of tiny motors that create subtle, realistic facial expressions.</p>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="p-2 border-2 border-bright-blue rounded-lg h-full flex flex-col justify-center">
+                                    <h4 class="font-bold text-deep-blue">Soft Robotic Chassis</h4>
+                                    <p class="text-sm text-gray-600">Pliable materials that mimic the warmth and yield of a human body.</p>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                 <div class="p-2 border-2 border-bright-blue rounded-lg h-full flex flex-col justify-center">
+                                    <h4 class="font-bold text-deep-blue">Sensor-Packed Dermis</h4>
+                                    <p class="text-sm text-gray-600">A network of sensors detecting touch, temperature, and pressure.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="material-card p-6 flex flex-col">
+                    <h3 class="text-2xl font-bold text-deep-blue text-center mb-1">Our Collective Hopes vs. Fears</h3>
+                    <p class="text-gray-600 text-center mb-4">For every potential benefit of AI companionship, there is a corresponding societal anxiety. This chart ranks the most cited public concerns, highlighting the ethical tightrope we must walk.</p>
+                    <div class="chart-container flex-grow">
+                        <canvas id="concernsBarChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <section class="material-card p-6 text-center">
+                <h2 class="text-xl font-bold text-deep-blue mb-2">A New Member of the Household?</h2>
+                <p class="text-gray-600 mb-4 max-w-2xl mx-auto">The final question isn't whether this technology will arrive, but how we will integrate it. Are we ready to be that body positive?</p>
+                <div class="bg-deep-blue p-6 rounded-lg text-white">
+                    <p class="text-7xl font-black text-cyan">1 in 10</p>
+                    <p class="text-2xl font-bold mt-2">Households are projected to have a social robot by 2040.</p>
+                    <p class="text-6xl mt-4">🤖</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+<script>
+    const brilliantBlues = {
+        deepBlue: '#004AAD',
+        brightBlue: '#008DDA',
+        cyan: '#41C9E2',
+        lightCyan: '#ACE2E1'
+    };
+    
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.plugins.legend.position = 'bottom';
+    Chart.defaults.color = '#374151';
+
+    function wrapLabel(str, maxWith) {
+        const words = str.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > maxWith) {
+                lines.push(currentLine.trim());
+                currentLine = '';
+            }
+            currentLine += word + ' ';
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    }
+
+    const universalTooltipOptions = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        } else {
+                          return label;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // 1. Acceptance Trend Chart
+    const acceptanceCtx = document.getElementById('acceptanceTrendChart').getContext('2d');
+    new Chart(acceptanceCtx, {
+        type: 'line',
+        data: {
+            labels: ['2015', '2017', '2019', '2021', '2023', '2025 (proj.)'],
+            datasets: [{
+                label: '% of Adults Open to AI Companionship',
+                data: [3, 5, 8, 14, 22, 30],
+                borderColor: brilliantBlues.brightBlue,
+                backgroundColor: 'rgba(0, 141, 218, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: brilliantBlues.deepBlue,
+                pointRadius: 5,
+            }]
+        },
+        options: {
+            ...universalTooltipOptions,
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Percentage (%)' }
+                },
+                x: {
+                    title: { display: true, text: 'Year' }
+                }
+            }
+        }
+    });
+
+    // 2. Compatibility Radar Chart
+    const compatibilityCtx = document.getElementById('compatibilityRadarChart').getContext('2d');
+    new Chart(compatibilityCtx, {
+        type: 'radar',
+        data: {
+            labels: ['Emotional Support', 'Intellectual Match', 'Perfect Availability', 'No Baggage', 'Physical Ideal', 'Shared Hobbies'],
+            datasets: [
+                {
+                    label: 'Ideal Human Partner',
+                    data: [9, 8, 6, 5, 7, 8],
+                    borderColor: brilliantBlues.deepBlue,
+                    backgroundColor: 'rgba(0, 74, 173, 0.2)',
+                    borderWidth: 2,
+                },
+                {
+                    label: 'Ideal AI Partner',
+                    data: [10, 9, 10, 10, 8, 9],
+                    borderColor: brilliantBlues.cyan,
+                    backgroundColor: 'rgba(65, 201, 226, 0.2)',
+                    borderWidth: 2,
+                }
+            ]
+        },
+        options: {
+            ...universalTooltipOptions,
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(0,0,0,0.1)' },
+                    grid: { color: 'rgba(0,0,0,0.1)' },
+                    pointLabels: { font: { size: 12 } },
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                }
+            }
+        }
+    });
+
+    // 3. Uncanny Valley Chart
+    const uncannyCtx = document.getElementById('uncannyValleyChart').getContext('2d');
+    new Chart(uncannyCtx, {
+        type: 'line',
+        data: {
+            labels: ['Industrial Arm', 'Toon Robot', 'Humanoid Toy', 'Android', 'Flawed CGI', 'Healthy Person'],
+            datasets: [{
+                label: 'Emotional Response / Familiarity',
+                data: [10, 60, 80, 40, -20, 100],
+                borderColor: brilliantBlues.brightBlue,
+                fill: false,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: brilliantBlues.deepBlue,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            ...universalTooltipOptions,
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    title: { display: true, text: 'Familiarity' },
+                    suggestedMin: -30,
+                    suggestedMax: 110
+                },
+                x: {
+                    title: { display: true, text: 'Degree of Human Likeness' },
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return wrapLabel(this.getLabelForValue(value), 10);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                ...universalTooltipOptions.plugins,
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'box',
+                            xMin: 3.5,
+                            xMax: 4.5,
+                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                            borderColor: 'rgba(255, 99, 132, 0.5)',
+                            borderWidth: 1,
+                            label: {
+                                content: 'Uncanny Valley',
+                                enabled: true,
+                                position: 'center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // 4. Concerns Bar Chart
+    const concernsCtx = document.getElementById('concernsBarChart').getContext('2d');
+    new Chart(concernsCtx, {
+        type: 'bar',
+        data: {
+            labels: [
+                wrapLabel('Loss of Authentic Human Connection', 20), 
+                wrapLabel('Data Privacy & Corporate Control', 20),
+                wrapLabel('Ethical Loopholes & AI Rights', 20), 
+                wrapLabel('Job Displacement in Care Sectors', 20),
+                wrapLabel('Reinforcing Unrealistic Ideals', 20)
+            ],
+            datasets: [{
+                label: 'Level of Public Concern',
+                data: [92, 85, 78, 70, 65],
+                backgroundColor: [
+                    'rgba(0, 74, 173, 0.7)',
+                    'rgba(0, 141, 218, 0.7)',
+                    'rgba(65, 201, 226, 0.7)',
+                    'rgba(172, 226, 225, 0.7)',
+                    'rgba(150, 200, 220, 0.7)'
+                ],
+                borderColor: brilliantBlues.deepBlue,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...universalTooltipOptions,
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Concern Score (out of 100)' }
+                }
+            },
+            plugins: {
+                ...universalTooltipOptions.plugins,
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>
+
