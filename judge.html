@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Galatea Proliferation: Inside the Companion Robot Revolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!--
+    Infographic Plan
+    Narrative Structure:
+    1.  Introduction: Set the "sci-fi is now" tone from the source article.
+    2.  The New Anatomy: Visualize the hardware breakthroughs (skin, movement, face) that make them look human.
+    3.  The Ghost in the Machine: Explain the AI core (NLP, emotional simulation) that makes them act human.
+    4.  The Companion Economy: Display the explosive market growth and key application areas with hard data.
+    5.  Key Players: Showcase the leading companies and their flagship humanoids.
+    6.  The Social Frontier: Present data on public opinion, acceptance, and the ethical questions raised.
+    
+    Color Palette Selection:
+    Name: Cybernetic Dawn
+    Vibrant, tech-focused, and professional. Chosen to evoke a futuristic yet clear aesthetic.
+    -   Background: #111827 (Gray-900)
+    -   Cards: #1F2937 (Gray-800)
+    -   Text: #F3F4F6 (Gray-100)
+    -   Accent 1 (Blue): #3B82F6
+    -   Accent 2 (Purple): #8B5CF6
+    -   Accent 3 (Pink): #EC4899
+    -   Highlight (Orange): #F97316
+
+    Visualization Choices & Justification (NO SVG or Mermaid JS Confirmed):
+    -   Hardware Diagram: Custom HTML/CSS. Goal: Inform. Best for showing components of a whole without using prohibited SVG.
+    -   AI Flowchart: Custom HTML/CSS. Goal: Organize. Shows the process of an AI's "thought" process clearly. Avoids prohibited diagramming libraries.
+    -   Radar Chart (AI Capabilities): Chart.js (Canvas). Goal: Compare. Excellent for comparing multiple quantitative variables on a single figure.
+    -   Line Chart (Market Growth): Chart.js (Canvas). Goal: Change. The definitive choice for showing a trend over time.
+    -   Donut Chart (Market Share): Chart.js (Canvas). Goal: Compare (Composition). Perfect for showing parts of a whole.
+    -   Company Cards Grid: HTML/Tailwind CSS. Goal: Organize/Inform. A clean, responsive way to present discrete blocks of information.
+    -   Bar Chart (Public Opinion): Chart.js (Canvas). Goal: Compare. Ideal for comparing values across distinct categories.
+    
+    Confirmation: NO SVG graphics or Mermaid JS are used in this file. All visualizations are rendered using Chart.js on HTML Canvas elements or are constructed with standard HTML and Tailwind CSS.
+    -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        
+        <header class="text-center mb-16">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+                The <span class="text-purple-400">Galatea</span> Proliferation
+            </h1>
+            <p class="mt-4 text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
+                We're standing on the precipice of an era where our companions are not born, but built. But is it genuine consciousness, or are we just running a more sophisticated diagnostic test? Let's dissect the revolution.
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <section class="lg:col-span-2 bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">The New Anatomy of Companionship</h2>
+                <p class="text-gray-300 mb-6">Today's humanoid is more than a plastic shell. It's a symphony of advanced materials and biomechanics designed to mimic life with unsettling accuracy. This isn't just about looking human; it's about creating a natural, responsive, and physical interaction.</p>
+                <div class="flex flex-col md:flex-row justify-around items-center space-y-8 md:space-y-0 md:space-x-8 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="text-5xl mb-2">🦾</div>
+                        <h3 class="font-bold text-lg text-blue-400">Fluid Motion</h3>
+                        <p class="text-sm max-w-xs">Sophisticated algorithms and advanced actuators allow for graceful, stable movement, navigating complex terrains from warehouses to your living room.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="text-5xl mb-2">😊</div>
+                        <h3 class="font-bold text-lg text-pink-400">Expressive Faces</h3>
+                        <p class="text-sm max-w-xs">High-fidelity micro-actuators under a flexible dermis create subtle, realistic facial expressions, generated in real-time to mirror or respond to human emotion.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                         <div class="text-5xl mb-2">✋</div>
+                        <h3 class="font-bold text-lg text-purple-400">Intelligent Skin</h3>
+                        <p class="text-sm max-w-xs">New gel-based synthetic skins with embedded sensors can detect pressure, temperature, and texture across their entire surface, some can even "heal" minor damage.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">The Ghost in the Machine</h2>
+                <p class="text-gray-300 mb-6">Beyond the hardware lies the true revolution: an AI core that learns, adapts, and communicates with startling nuance. But how does it "think"? It's a high-speed process of analysis and prediction, blurring the line between understanding and simulation.</p>
+                <div class="space-y-4 text-sm">
+                    <div class="flex items-center space-x-3 p-3 bg-gray-900 rounded-lg">
+                        <span class="font-bold text-blue-400">INPUT:</span>
+                        <span>Human voice command or text.</span>
+                    </div>
+                    <div class="flex justify-center text-2xl text-gray-500">↓</div>
+                    <div class="flex items-center space-x-3 p-3 bg-gray-900 rounded-lg">
+                        <span class="font-bold text-pink-400">ANALYSIS:</span>
+                        <span>NLP models deconstruct grammar, while sentiment analysis gauges emotional tone.</span>
+                    </div>
+                    <div class="flex justify-center text-2xl text-gray-500">↓</div>
+                    <div class="flex items-center space-x-3 p-3 bg-gray-900 rounded-lg">
+                        <span class="font-bold text-purple-400">CONTEXT:</span>
+                        <span>AI cross-references input with past interactions and learned user preferences.</span>
+                    </div>
+                    <div class="flex justify-center text-2xl text-gray-500">↓</div>
+                     <div class="flex items-center space-x-3 p-3 bg-gray-900 rounded-lg">
+                        <span class="font-bold text-orange-500">OUTPUT:</span>
+                        <span>Generates a contextually appropriate, emotionally-tuned verbal and physical response.</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">Core AI Capabilities</h2>
+                <p class="text-gray-300 mb-6">Modern companion AIs are not single-task programs. They are an integration of multiple advanced systems working in concert to create the illusion of a cohesive personality and intelligence.</p>
+                <div class="chart-container h-[350px] sm:h-[400px]">
+                    <canvas id="capabilitiesChart"></canvas>
+                </div>
+            </section>
+
+            <section class="lg:col-span-2 bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">The Companion Economy</h2>
+                <p class="text-gray-300 mb-6">This isn't a niche hobbyist market. Fueled by breakthroughs in AI, labor shortages, and an aging global population, the humanoid robot market is projected to experience explosive, near-vertical growth, transforming industries from healthcare to logistics.</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                    <div class="md:col-span-3">
+                        <h3 class="font-semibold text-center mb-2">Global Humanoid Robot Market Forecast (USD)</h3>
+                        <div class="chart-container h-[350px] sm:h-[400px] max-w-full">
+                            <canvas id="marketGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                         <h3 class="font-semibold text-center mb-2">Primary Application Areas</h3>
+                         <div class="chart-container h-[350px] sm:h-[400px] max-w-xs sm:max-w-sm">
+                            <canvas id="marketShareChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-2 bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">Key Players on the World Stage</h2>
+                <p class="text-gray-300 mb-6">A new race is on. Tech giants and nimble startups are vying to create the first commercially viable, general-purpose humanoid robots. Here are some of the frontrunners shaping our future.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gray-900 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-blue-400">Tesla Optimus</h3>
+                        <p class="text-xs mt-2"><strong>Focus:</strong> General-purpose industrial and domestic tasks. Leverages FSD AI for autonomous navigation.</p>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-pink-400">Figure 02</h3>
+                        <p class="text-xs mt-2"><strong>Focus:</strong> Manufacturing & Logistics. Notable for its integration with OpenAI for advanced reasoning and language.</p>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg text-center">
+                         <h3 class="font-bold text-purple-400">Engineered Arts Ameca</h3>
+                        <p class="text-xs mt-2"><strong>Focus:</strong> Human-Robot Interaction & Entertainment. Renowned for its hyper-realistic facial expressions.</p>
+                    </div>
+                     <div class="bg-gray-900 p-4 rounded-lg text-center">
+                        <h3 class="font-bold text-orange-500">Sanctuary AI Phoenix</h3>
+                        <p class="text-xs mt-2"><strong>Focus:</strong> General-purpose work. Aims for human-like intelligence and dexterity to perform a wide range of labor tasks.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="lg:col-span-2 bg-gray-800 rounded-lg shadow-2xl p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-orange-500 mb-4">The Social Frontier: Acceptance & Ethics</h2>
+                <p class="text-gray-300 mb-6">As these machines walk among us, they force profound questions. Public opinion is a complex mixture of optimism, skepticism, and deep-seated ethical concern. We are more willing to protect them than to grant them rights, for now.</p>
+                <div class="chart-container h-[400px] max-w-full">
+                    <canvas id="ethicsChart"></canvas>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const FONT_COLOR = '#F3F4F6';
+            const GRID_COLOR = 'rgba(243, 244, 246, 0.1)';
+            const PALETTE = {
+                blue: '#3B82F6',
+                purple: '#8B5CF6',
+                pink: '#EC4899',
+                orange: '#F97316',
+                yellow: '#F59E0B'
+            };
+
+            function wrapText(label, maxWidth) {
+                if (typeof label !== 'string' || label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    } else {
+                        currentLine += ' ' + words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            Chart.defaults.color = FONT_COLOR;
+            Chart.defaults.font.family = "'Inter', sans-serif";
+
+            // Capabilities Radar Chart
+            const capabilitiesCtx = document.getElementById('capabilitiesChart').getContext('2d');
+            new Chart(capabilitiesCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Natural Language Processing', 'Emotional Recognition', 'Contextual Memory', 'Predictive Learning', 'Task Execution'],
+                    datasets: [{
+                        label: 'Current Capability Level',
+                        data: [9, 7, 8, 6, 8.5],
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        borderColor: PALETTE.purple,
+                        pointBackgroundColor: PALETTE.purple,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: PALETTE.purple
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: GRID_COLOR },
+                            grid: { color: GRID_COLOR },
+                            pointLabels: {
+                                font: { size: 12 },
+                                color: FONT_COLOR
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(0,0,0,0)',
+                                stepSize: 2
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+
+            // Market Growth Line Chart
+            const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2025', '2027', '2029', '2031', '2033', '2035'],
+                    datasets: [{
+                        label: 'Market Size in Billion USD',
+                        data: [2.98, 12, 45, 95, 160, 243.4],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: PALETTE.blue,
+                        tension: 0.4,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: GRID_COLOR },
+                            ticks: {
+                                callback: function(value) { return '$' + value + 'B'; }
+                            }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Market Share Donut Chart
+            const marketShareCtx = document.getElementById('marketShareChart').getContext('2d');
+            new Chart(marketShareCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Personal Assistance & Caregiving', 'Healthcare', 'Industrial & Logistics', 'Education & Entertainment', 'Other'],
+                    datasets: [{
+                        label: 'Market Share by Application',
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [PALETTE.blue, PALETTE.purple, PALETTE.pink, PALETTE.orange, PALETTE.yellow],
+                        borderColor: '#1F2937',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            // Ethics Bar Chart
+            const ethicsCtx = document.getElementById('ethicsChart').getContext('2d');
+            const ethicsLabels = [
+                'Support for protecting robots from cruelty', 
+                'Believe AI can genuinely reduce loneliness',
+                'Concerned about privacy and data usage',
+                'General opposition to granting robots legal rights',
+                'Hesitancy/resistance to personal adoption'
+            ];
+            new Chart(ethicsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ethicsLabels.map(label => wrapText(label, 25)),
+                    datasets: [{
+                        label: '% of Respondents',
+                        data: [72, 58, 85, 65, 45],
+                        backgroundColor: [PALETTE.blue, PALETTE.purple, PALETTE.pink, PALETTE.orange, PALETTE.yellow],
+                        borderColor: '#1F2937',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    },
+                    scales: {
+                        x: {
+                           grid: { color: GRID_COLOR },
+                           ticks: {
+                               callback: function(value) { return value + '%'; }
+                            }
+                        },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
+
